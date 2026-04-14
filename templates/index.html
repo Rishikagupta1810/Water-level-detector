@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AquaLevel — Water Level Monitor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #F0F8FF;
+      --surface: #ffffff;
+      --border: #c8dff0;
+      --text: #1a2e3d;
+      --muted: #6b8fa8;
+      --accent: #1a7abf;
+      --safe: #16a34a;
+      --warn: #ea580c;
+      --danger: #dc2626;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+    header { width: 100%; padding: 20px 40px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); background: #ffffff; }
+    header h1 { font-family: 'Space Mono', monospace; font-size: 1rem; letter-spacing: 0.08em; color: var(--accent); }
+    header span { font-size: 0.72rem; color: var(--muted); margin-left: auto; font-family: 'Space Mono', monospace; }
+
+    main { width: 100%; max-width: 1000px; padding: 40px 24px; display: grid; grid-template-columns: 320px 1fr; gap: 28px; align-items: start; }
+    @media(max-width:720px){ main { grid-template-columns: 1fr; } }
+
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: 0 1px 4px rgba(26,122,191,0.06); }
+    .panel-title { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; margin-bottom: 16px; }
+
+    .dropzone { border: 2px dashed var(--border); border-radius: 8px; padding: 36px 16px; text-align: center; cursor: pointer; transition: border-color .2s, background .2s; position: relative; background: var(--bg); }
+    .dropzone:hover { border-color: var(--accent); background: #deeef8; }
+    .dropzone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .dropzone p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+    .dropzone .fname { margin-top: 8px; font-size: 0.75rem; color: var(--accent); font-family: 'Space Mono', monospace; display: none; }
+
+    #submit-btn { margin-top: 16px; width: 100%; padding: 11px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; cursor: pointer; transition: opacity .2s; }
+    #submit-btn:hover { opacity: .88; }
+    #submit-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+    .legend-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.8rem; }
+    .legend-row:last-child { border-bottom: none; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .legend-range { color: var(--muted); font-size: 0.72rem; margin-left: auto; font-family: 'Space Mono', monospace; }
+
+    .result-panel { display: flex; flex-direction: column; gap: 16px; }
+    .stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+    .stat-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+    .stat-card .lbl { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+    .stat-card .val { font-family: 'Space Mono', monospace; font-size: 1.4rem; font-weight: 700; }
+    .safe .val { color: var(--safe); } .warn .val { color: var(--warn); } .danger .val { color: var(--danger); } .neutral .val { color: var(--accent); }
+
+    .image-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(26,122,191,0.06); }
+    .image-card img { width: 100%; display: block; }
+    .image-card .cap { padding: 9px 14px; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); }
+
+    .empty-state { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 56px 32px; text-align: center; color: var(--muted); box-shadow: 0 1px 4px rgba(26,122,191,0.06); }
+    .empty-state p { font-size: 0.82rem; line-height: 1.7; }
+
+    .error-toast { background: #fff5f5; border: 1px solid #fecaca; color: #b91c1c; border-radius: 8px; padding: 10px 14px; font-size: 0.8rem; margin-top: 12px; display: none; }
+
+    .spinner { display: none; text-align: center; padding: 48px; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 0.72rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner::before { content:''; display:inline-block; width:16px; height:16px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; margin-right:8px; vertical-align:middle; }
+  </style>
+</head>
+<body>
+
+<header>
+  <svg width="20" height="20" fill="none" stroke="#1a7abf" stroke-width="2" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/>
+  </svg>
+  <h1>AQUALEVEL</h1>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
+    <span style="font-size:0.72rem;color:var(--muted);font-family:'Space Mono',monospace;">&#128100; {{ username }}</span>
+    <a href="/logout" style="font-size:0.72rem;font-family:'Space Mono',monospace;color:var(--danger);text-decoration:none;border:1px solid #fecaca;padding:4px 12px;border-radius:6px;">LOGOUT</a>
+  </div>
+</header>
+
+<main>
+  <div style="display:flex;flex-direction:column;gap:14px;">
+
+    <div class="panel">
+      <div class="panel-title">Upload Image</div>
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="file-input" accept="image/*"/>
+        <p>Drop image here<br/>or click to browse</p>
+        <div class="fname" id="fname"></div>
+      </div>
+      <button id="submit-btn" disabled>ANALYSE WATER LEVEL</button>
+      <div class="error-toast" id="err"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Status Legend</div>
+      <div class="legend-row"><div class="dot" style="background:var(--safe)"></div><span>SAFE</span><span class="legend-range">0 – 2.5 m</span></div>
+      <div class="legend-row"><div class="dot" style="background:var(--warn)"></div><span>WARNING</span><span class="legend-range">2.5 – 4.0 m</span></div>
+      <div class="legend-row"><div class="dot" style="background:var(--danger)"></div><span>DANGER</span><span class="legend-range">≥ 4.0 m</span></div>
+    </div>
+
+  </div>
+
+  <div class="result-panel">
+    <div class="stats-row" id="stats-row" style="display:none">
+      <div class="stat-card neutral"><div class="lbl">Water Level</div><div class="val" id="s-level">—</div></div>
+      <div class="stat-card neutral"><div class="lbl">Tank Fill</div><div class="val" id="s-pct">—</div></div>
+      <div class="stat-card neutral" id="s-status-card"><div class="lbl">Status</div><div class="val" id="s-status">—</div></div>
+    </div>
+    <div class="spinner" id="spinner">Analysing image...</div>
+    <div class="empty-state" id="empty">
+      <p>Upload a tank or reservoir image.<br/>Detection result will appear here.</p>
+    </div>
+    <div class="image-card" id="img-card" style="display:none">
+      <img id="result-img" src="" alt="Processed"/>
+      <div class="cap" id="img-cap"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+  const fi = document.getElementById('file-input');
+  fi.addEventListener('change', () => {
+    const f = fi.files[0]; if (!f) return;
+    const d = document.getElementById('fname'); d.textContent = f.name; d.style.display = 'block';
+    document.getElementById('submit-btn').disabled = false;
+  });
+
+  document.getElementById('submit-btn').addEventListener('click', async () => {
+    const f = fi.files[0]; if (!f) return;
+    document.getElementById('empty').style.display = 'none';
+    document.getElementById('img-card').style.display = 'none';
+    document.getElementById('stats-row').style.display = 'none';
+    document.getElementById('err').style.display = 'none';
+    document.getElementById('spinner').style.display = 'block';
+    document.getElementById('submit-btn').disabled = true;
+
+    const fd = new FormData(); fd.append('image', f);
+    try {
+      const res = await fetch('/detect', { method: 'POST', body: fd });
+      const data = await res.json();
+      document.getElementById('spinner').style.display = 'none';
+      if (data.error) {
+        const e = document.getElementById('err'); e.textContent = '⚠ ' + data.error; e.style.display = 'block';
+        document.getElementById('empty').style.display = 'block'; return;
+      }
+      document.getElementById('s-level').textContent = data.level_meters + 'm';
+      document.getElementById('s-pct').textContent = data.level_percent + '%';
+      document.getElementById('s-status').textContent = data.status;
+      const sc = document.getElementById('s-status-card');
+      sc.className = 'stat-card ' + ({ SAFE:'safe', WARNING:'warn', DANGER:'danger' }[data.status] || 'neutral');
+      document.getElementById('stats-row').style.display = 'grid';
+      document.getElementById('result-img').src = data.image_url + '?t=' + Date.now();
+      document.getElementById('img-cap').textContent = f.name + '  ·  ' + data.level_meters + 'm detected  ·  scale 0–5m';
+      document.getElementById('img-card').style.display = 'block';
+    } catch(e) {
+      document.getElementById('spinner').style.display = 'none';
+      document.getElementById('empty').style.display = 'block';
+      const et = document.getElementById('err'); et.textContent = '⚠ Network error: ' + e.message; et.style.display = 'block';
+    }
+    document.getElementById('submit-btn').disabled = false;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AquaLevel — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #F0F8FF; --surface: #ffffff; --border: #c8dff0;
+      --text: #1a2e3d; --muted: #6b8fa8; --accent: #1a7abf;
+      --danger: #dc2626; --success: #16a34a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); font-family: 'DM Sans', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+    .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+    .brand h1 { font-family: 'Space Mono', monospace; font-size: 1.1rem; letter-spacing: 0.1em; color: var(--accent); }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 36px 40px; width: 100%; max-width: 400px; box-shadow: 0 2px 12px rgba(26,122,191,0.08); }
+
+    .card-title { font-family: 'Space Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 24px; }
+
+    .field { margin-bottom: 18px; }
+    .field label { display: block; font-size: 0.78rem; color: var(--muted); font-family: 'Space Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .field input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--bg); outline: none; transition: border-color .2s; }
+    .field input:focus { border-color: var(--accent); background: #fff; }
+
+    .btn { width: 100%; padding: 11px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; cursor: pointer; margin-top: 6px; transition: opacity .2s; }
+    .btn:hover { opacity: .88; }
+
+    .flash { padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; margin-bottom: 18px; }
+    .flash.error   { background: #fff5f5; border: 1px solid #fecaca; color: var(--danger); }
+    .flash.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: var(--success); }
+
+    .footer-link { text-align: center; margin-top: 20px; font-size: 0.82rem; color: var(--muted); }
+    .footer-link a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .footer-link a:hover { text-decoration: underline; }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+  </style>
+</head>
+<body>
+
+  <div class="brand">
+    <svg width="22" height="22" fill="none" stroke="#1a7abf" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/>
+    </svg>
+    <h1>AQUALEVEL</h1>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Sign in to your account</div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="/login">
+      <div class="field">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter your username" required autofocus/>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter your password" required/>
+      </div>
+      <button class="btn" type="submit">LOGIN</button>
+    </form>
+
+    <hr class="divider"/>
+
+    <div class="footer-link">
+      Don't have an account? <a href="/register">Register here</a>
+    </div>
+  </div>
+
+</body>
+</html>
