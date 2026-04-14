@@ -64,6 +64,22 @@
     .spinner { display: none; text-align: center; padding: 48px; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 0.72rem; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .spinner::before { content:''; display:inline-block; width:16px; height:16px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; margin-right:8px; vertical-align:middle; }
+
+    /* Session expired toast */
+    .toast {
+      position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+      background: #1a2e3d; color: #fff; padding: 14px 24px;
+      border-radius: 10px; font-size: 0.85rem; font-family: 'DM Sans', sans-serif;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+      z-index: 9999; opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+      max-width: 90vw; text-align: center;
+    }
+    .toast.show { opacity: 1; pointer-events: auto; }
+    .toast .toast-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .toast .toast-bar { height: 3px; background: var(--accent); border-radius: 2px; margin-top: 10px; animation: none; }
+    @keyframes shrink { from { width: 100%; } to { width: 0%; } }
   </style>
 </head>
 <body>
@@ -142,6 +158,14 @@
       const res = await fetch('/detect', { method: 'POST', body: fd });
       const data = await res.json();
       document.getElementById('spinner').style.display = 'none';
+
+      // Session expired — show toast then redirect to login
+      if (res.status === 401 || data.session_expired) {
+        showSessionToast(data.error || 'Session expired. Please log in again.');
+        setTimeout(() => { window.location.href = '/'; }, 3000);
+        return;
+      }
+
       if (data.error) {
         const e = document.getElementById('err'); e.textContent = '⚠ ' + data.error; e.style.display = 'block';
         document.getElementById('empty').style.display = 'block'; return;
@@ -162,6 +186,24 @@
     }
     document.getElementById('submit-btn').disabled = false;
   });
+
+  function showSessionToast(msg) {
+    const toast = document.getElementById('session-toast');
+    document.getElementById('toast-msg').textContent = msg;
+    toast.classList.add('show');
+    // Animate the countdown bar
+    const bar = document.getElementById('toast-bar');
+    bar.style.animation = 'shrink 3s linear forwards';
+  }
 </script>
+
+<!-- Session expired toast -->
+<div class="toast" id="session-toast">
+  <span class="toast-icon">🔒</span>
+  <div>
+    <div id="toast-msg">Session expired. Redirecting to login...</div>
+    <div class="toast-bar" id="toast-bar"></div>
+  </div>
+</div>
 </body>
 </html>
