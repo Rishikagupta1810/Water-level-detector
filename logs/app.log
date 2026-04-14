@@ -545,3 +545,67 @@
 2026-04-14 23:24:06 | INFO     | __main__                       | User logged out | username=rizz
 2026-04-14 23:24:06 | INFO     | werkzeug                       | 127.0.0.1 - - [14/Apr/2026 23:24:06] "[32mGET /logout HTTP/1.1[0m" 302 -
 2026-04-14 23:24:06 | INFO     | werkzeug                       | 127.0.0.1 - - [14/Apr/2026 23:24:06] "GET / HTTP/1.1" 200 -
+2026-04-15 01:40:37 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 01:40:37 | INFO     | auth.user_model                | Database ready | path=database\users.db
+2026-04-15 01:40:37 | INFO     | __main__                       | Starting AquaLevel Flask app
+2026-04-15 01:40:37 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-15 01:40:37 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-15 01:40:37 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 01:40:39 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 01:40:39 | INFO     | auth.user_model                | Database ready | path=database\users.db
+2026-04-15 01:40:39 | INFO     | __main__                       | Starting AquaLevel Flask app
+2026-04-15 01:40:39 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-15 01:40:39 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-15 01:43:37 | INFO     | werkzeug                       |  * Detected change in 'c:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\app.py', reloading
+2026-04-15 01:43:38 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 01:44:11 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 01:44:11 | INFO     | auth.user_model                | Database ready | path=database\users.db
+2026-04-15 01:44:11 | INFO     | __main__                       | Starting AquaLevel Flask app
+2026-04-15 01:44:11 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:10000
+ * Running on http://10.86.115.230:10000
+2026-04-15 01:44:11 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-15 01:44:39 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 01:44:39] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-15 01:44:39 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 01:44:39] "GET /detect HTTP/1.1" 200 -
+2026-04-15 01:44:41 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 01:44:41] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-15 01:45:02 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 01:45:02] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-15 01:45:02 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 01:45:02] "GET /detect HTTP/1.1" 200 -
+2026-04-15 01:45:04 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 01:45:04] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-15 01:45:04 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 01:45:04] "GET /detect HTTP/1.1" 200 -
+2026-04-15 01:45:09 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:45:09] "GET / HTTP/1.1" 200 -
+2026-04-15 01:45:10 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:45:10] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-15 01:45:31 | INFO     | __main__                       | Login attempt | username=Rishika
+2026-04-15 01:45:32 | WARNING  | auth.user_model                | Login failed — wrong password for: Rishika
+2026-04-15 01:45:32 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:45:32] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-04-15 01:45:32 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:45:32] "GET / HTTP/1.1" 200 -
+2026-04-15 01:45:47 | INFO     | __main__                       | Login attempt | username=rishika
+2026-04-15 01:45:47 | WARNING  | auth.user_model                | Login failed — username not found: rishika
+2026-04-15 01:45:47 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:45:47] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-04-15 01:45:47 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:45:47] "GET / HTTP/1.1" 200 -
+2026-04-15 01:45:48 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:45:48] "GET /register HTTP/1.1" 200 -
+2026-04-15 01:46:04 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:46:04] "[32mPOST /register HTTP/1.1[0m" 302 -
+2026-04-15 01:46:04 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:46:04] "GET /register HTTP/1.1" 200 -
+2026-04-15 01:46:41 | INFO     | auth.user_model                | New user registered | username=ris | email=guptarishika053@gmail.com
+2026-04-15 01:46:41 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:46:41] "[32mPOST /register HTTP/1.1[0m" 302 -
+2026-04-15 01:46:41 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:46:41] "GET / HTTP/1.1" 200 -
+2026-04-15 01:46:48 | INFO     | __main__                       | Login attempt | username=ris
+2026-04-15 01:46:48 | INFO     | auth.user_model                | Login successful | username=ris
+2026-04-15 01:46:48 | INFO     | __main__                       | Session created | username=ris
+2026-04-15 01:46:48 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:46:48] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-04-15 01:46:48 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:46:48] "GET /detect HTTP/1.1" 200 -
+2026-04-15 01:46:57 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\image.jpg, original_size=(320x180)
+2026-04-15 01:46:57 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.000, padded_to=(640x480)
+2026-04-15 01:46:57 | INFO     | detector.water_level_detector  | Starting detection | image shape=(480, 640, 3)
+2026-04-15 01:46:57 | DEBUG    | detector.water_level_detector  | Sky removed | cutoff_y=240 (top 50% of 480px height)
+2026-04-15 01:46:57 | INFO     | detector.water_level_detector  | Preprocessing done | sky blacked out above y=240
+2026-04-15 01:46:57 | DEBUG    | detector.water_level_detector  | Water mask | 46900 water pixels / 307200 total
+2026-04-15 01:46:57 | DEBUG    | detector.water_level_detector  | Water surface confirmed at y=328 (3 consecutive qualifying rows)
+2026-04-15 01:46:57 | INFO     | detector.water_level_detector  | Water surface at y=328 | level=1.58m (31.7%) | status=SAFE
+2026-04-15 01:46:57 | DEBUG    | detector.image_processor       | Drew water line at y=328 with color=(34, 197, 94)
+2026-04-15 01:46:57 | DEBUG    | detector.image_processor       | Drew scale bar. fill up to 1.58m, danger zone above 4m
+2026-04-15 01:46:57 | INFO     | detector.image_processor       | Saved annotated image to: static/uploads\image.jpg
+2026-04-15 01:46:57 | INFO     | __main__                       | Detection done | file=image.jpg | level=1.58m | status=SAFE | user=ris
+2026-04-15 01:46:57 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:46:57] "POST /detect HTTP/1.1" 200 -
+2026-04-15 01:46:57 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:46:57] "GET /static/uploads/image.jpg?t=1776197817178 HTTP/1.1" 200 -
