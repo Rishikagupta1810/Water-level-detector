@@ -609,3 +609,5 @@
 2026-04-15 01:46:57 | INFO     | __main__                       | Detection done | file=image.jpg | level=1.58m | status=SAFE | user=ris
 2026-04-15 01:46:57 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:46:57] "POST /detect HTTP/1.1" 200 -
 2026-04-15 01:46:57 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:46:57] "GET /static/uploads/image.jpg?t=1776197817178 HTTP/1.1" 200 -
+2026-04-15 02:09:46 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 02:09:46 | INFO     | auth.user_model                | Database ready | path=database\users.db
