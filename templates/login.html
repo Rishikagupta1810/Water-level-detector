@@ -12,25 +12,101 @@
       --danger: #dc2626; --success: #16a34a;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); font-family: 'DM Sans', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    body {
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+    }
 
     .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
     .brand h1 { font-family: 'Space Mono', monospace; font-size: 1.1rem; letter-spacing: 0.1em; color: var(--accent); }
 
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 36px 40px; width: 100%; max-width: 400px; box-shadow: 0 2px 12px rgba(26,122,191,0.08); }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 36px 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 2px 12px rgba(26,122,191,0.08);
+    }
 
-    .card-title { font-family: 'Space Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 24px; }
+    .card-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
 
-    .field { margin-bottom: 18px; }
-    .field label { display: block; font-size: 0.78rem; color: var(--muted); font-family: 'Space Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
-    .field input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--bg); outline: none; transition: border-color .2s; }
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .field input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color .2s;
+    }
     .field input:focus { border-color: var(--accent); background: #fff; }
+    .field input.invalid { border-color: var(--danger); }
 
-    .btn { width: 100%; padding: 11px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; cursor: pointer; margin-top: 6px; transition: opacity .2s; }
+    /* inline error — same style as register page */
+    .field-error {
+      display: none;
+      margin-top: 6px;
+      padding: 8px 12px;
+      background: #fff5f5;
+      border: 1px solid #fecaca;
+      border-radius: 6px;
+      color: var(--danger);
+      font-size: 0.78rem;
+    }
+    .field-error.show { display: block; }
+
+    .btn {
+      width: 100%;
+      padding: 11px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: opacity .2s;
+    }
     .btn:hover { opacity: .88; }
 
-    .flash { padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; margin-bottom: 18px; }
-    .flash.error   { background: #fff5f5; border: 1px solid #fecaca; color: var(--danger); }
+    /* success flash only shown at top (e.g. "Account created!") */
+    .flash {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      margin-bottom: 18px;
+    }
     .flash.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: var(--success); }
 
     .footer-link { text-align: center; margin-top: 20px; font-size: 0.82rem; color: var(--muted); }
@@ -53,30 +129,106 @@
   <div class="card">
     <div class="card-title">Sign in to your account</div>
 
+    {# Success flash (e.g. after registration) shown at top #}
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% for category, message in messages %}
-        <div class="flash {{ category }}">{{ message }}</div>
+        {% if category == 'success' %}
+          <div class="flash success">{{ message }}</div>
+        {% endif %}
       {% endfor %}
     {% endwith %}
 
-    <form method="POST" action="/login">
+    {# Error flash mapped inline by JS below #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        {% if category == 'error' %}
+          <span id="server-error" data-msg="{{ message }}" style="display:none"></span>
+        {% endif %}
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="/login" id="login-form" novalidate>
+
       <div class="field">
         <label>Username</label>
-        <input type="text" name="username" placeholder="Enter your username" required autofocus/>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="Your username"
+          required
+          autofocus
+          autocomplete="username"
+        />
+        <div class="field-error" id="err-username"></div>
       </div>
+
       <div class="field">
         <label>Password</label>
-        <input type="password" name="password" placeholder="Enter your password" required/>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Your password"
+          required
+          autocomplete="current-password"
+        />
+        <div class="field-error" id="err-password"></div>
       </div>
-      <button class="btn" type="submit">LOGIN</button>
+
+      <button class="btn" type="submit">SIGN IN</button>
     </form>
 
     <hr class="divider"/>
 
     <div class="footer-link">
-      Don't have an account? <a href="/register">Register here</a>
+      Don't have an account? <a href="/register">Create one</a>
     </div>
   </div>
+
+<script>
+  function showError(fieldId, errId, msg) {
+    const input = document.getElementById(fieldId);
+    const err   = document.getElementById(errId);
+    input.classList.add('invalid');
+    err.textContent = msg;
+    err.classList.add('show');
+  }
+
+  function clearError(fieldId, errId) {
+    document.getElementById(fieldId).classList.remove('invalid');
+    document.getElementById(errId).classList.remove('show');
+  }
+
+  // ── Map server-side flash error inline ──
+  // "Invalid username or password" → show under password field (don't reveal which is wrong)
+  const serverErr = document.getElementById('server-error');
+  if (serverErr) {
+    const msg = serverErr.dataset.msg;
+    showError('password', 'err-password', msg);
+  }
+
+  // Clear on input
+  document.getElementById('username').addEventListener('input', () => clearError('username', 'err-username'));
+  document.getElementById('password').addEventListener('input', () => clearError('password', 'err-password'));
+
+  // ── Client-side validation before submit ──
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    let valid = true;
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (username.length === 0) {
+      showError('username', 'err-username', 'Please enter your username.'); valid = false;
+    }
+    if (password.length === 0) {
+      showError('password', 'err-password', 'Please enter your password.'); valid = false;
+    }
+
+    if (!valid) e.preventDefault();
+  });
+</script>
 
 </body>
 </html>

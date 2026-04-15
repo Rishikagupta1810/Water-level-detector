@@ -1,115 +1,684 @@
-<!-- ═══════════════════════════════════════════════════════════════
-     PASTE THIS INSIDE <head> — Toast styles
-     ═══════════════════════════════════════════════════════════════ -->
-<style>
-  /* ── Toast notification ── */
-  #toast {
-    display: none;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 9999;
-    min-width: 280px;
-    max-width: 380px;
-    padding: 14px 18px;
-    border-radius: 10px;
-    font-size: 0.85rem;
-    font-family: 'DM Sans', sans-serif;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    animation: slideIn 0.3s ease;
-  }
-  #toast.error   { background: #fff5f5; border: 1px solid #fecaca; color: #dc2626; }
-  #toast.warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
-  #toast.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a; }
-  #toast .toast-title { font-weight: 700; margin-bottom: 3px; }
-  #toast .toast-msg   { opacity: 0.85; }
-  @keyframes slideIn { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-  @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(110%); opacity: 0; } }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AquaLevel — Water Level Monitor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:        #0b1220;
+      --surface:   #111827;
+      --surface2:  #1a2436;
+      --border:    #1e3048;
+      --text:      #e8f0f8;
+      --muted:     #4a6480;
+      --accent:    #38bdf8;
+      --accent2:   #0ea5e9;
+      --danger:    #ef4444;
+      --warning:   #f59e0b;
+      --safe:      #22c55e;
+      --glow:      rgba(56,189,248,0.15);
+    }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-<!-- ═══════════════════════════════════════════════════════════════
-     PASTE THIS INSIDE <body> — Toast element (right after <body>)
-     ═══════════════════════════════════════════════════════════════ -->
+    body {
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse at 20% 0%, rgba(14,165,233,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(56,189,248,0.05) 0%, transparent 50%);
+    }
+
+    /* ── Navbar ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(11,18,32,0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    .brand h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+    }
+
+    .nav-right {
+      display: flex; align-items: center; gap: 16px;
+    }
+
+    .nav-subtitle {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    .nav-user {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .nav-user span { color: var(--text); font-weight: 500; }
+
+    .logout-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 14px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .2s;
+    }
+    .logout-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Layout ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 65px);
+    }
+
+    /* ── Left Panel ── */
+    .left-panel {
+      border-right: 1px solid var(--border);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .panel-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    /* Upload zone */
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 28px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .25s;
+      position: relative;
+      background: var(--surface);
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--accent);
+      background: rgba(56,189,248,0.04);
+    }
+    .upload-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .upload-icon { font-size: 2.2rem; margin-bottom: 10px; opacity: 0.7; }
+    .upload-text { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+    .upload-text strong { color: var(--accent); font-weight: 500; }
+    .upload-hint { font-size: 0.72rem; color: var(--muted); margin-top: 5px; opacity: 0.7; }
+
+    /* Preview */
+    #preview-wrap { display: none; }
+    #preview-wrap img {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      max-height: 180px;
+    }
+    .preview-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 8px;
+    }
+    .preview-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px;
+    }
+    .preview-change {
+      font-size: 0.7rem; color: var(--accent); cursor: pointer; text-decoration: underline;
+    }
+
+    /* Analyse button */
+    .btn-analyse {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--accent2), #0284c7);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 0 4px 20px rgba(14,165,233,0.25);
+    }
+    .btn-analyse:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(14,165,233,0.4);
+    }
+    .btn-analyse:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    .spinner {
+      display: none;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Status legend */
+    .legend-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+
+    .legend-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .legend-row:last-child { border-bottom: none; }
+
+    .legend-left { display: flex; align-items: center; gap: 10px; }
+    .legend-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+    }
+    .legend-dot.safe    { background: var(--safe); box-shadow: 0 0 6px var(--safe); }
+    .legend-dot.warning { background: var(--warning); box-shadow: 0 0 6px var(--warning); }
+    .legend-dot.danger  { background: var(--danger); box-shadow: 0 0 6px var(--danger); }
+
+    .legend-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: var(--text);
+    }
+    .legend-range {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    /* ── Right Panel ── */
+    .right-panel {
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Stats row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .stat-card.active::before { opacity: 1; }
+
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+    }
+    .stat-value.danger  { color: var(--danger); }
+    .stat-value.warning { color: var(--warning); }
+    .stat-value.safe    { color: var(--safe); }
+    .stat-value.placeholder { color: var(--muted); font-size: 1.4rem; }
+
+    .stat-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Result image area */
+    .result-area {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      flex: 1;
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .result-placeholder {
+      text-align: center;
+      color: var(--muted);
+    }
+    .result-placeholder .ph-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.3; }
+    .result-placeholder p { font-size: 0.85rem; opacity: 0.5; }
+
+    #result-img {
+      display: none;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      max-height: 440px;
+    }
+
+    .result-footer {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 10px 16px;
+      background: linear-gradient(0deg, rgba(11,18,32,0.95), transparent);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      display: none;
+    }
+
+    /* Confidence bar */
+    .confidence-wrap {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+    }
+    .conf-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 8px;
+    }
+    .conf-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .conf-value {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+    }
+    .conf-track {
+      background: var(--border);
+      border-radius: 99px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .conf-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      transition: width .8s ease;
+      width: 0%;
+    }
+
+    /* Toast */
+    #toast {
+      display: none;
+      position: fixed;
+      top: 80px; right: 24px;
+      z-index: 9999;
+      min-width: 280px; max-width: 360px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 0.83rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    #toast.error   { background: #1f0a0a; border: 1px solid #7f1d1d; color: #fca5a5; }
+    #toast.warning { background: #1f1200; border: 1px solid #78350f; color: #fcd34d; }
+    #toast.success { background: #071f0e; border: 1px solid #14532d; color: #86efac; }
+    .toast-title { font-weight: 700; margin-bottom: 3px; font-family: 'Syne', sans-serif; font-size: 0.85rem; }
+    .toast-msg   { opacity: 0.8; font-size: 0.78rem; }
+    @keyframes slideIn  { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(110%); opacity: 0; } }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .left-panel { border-right: none; border-bottom: 1px solid var(--border); }
+      .stats-row { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      nav { padding: 14px 16px; }
+      .nav-subtitle { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Toast -->
 <div id="toast">
   <div class="toast-title" id="toast-title"></div>
   <div class="toast-msg"   id="toast-msg"></div>
 </div>
 
+<!-- Navbar -->
+<nav>
+  <div class="brand">
+    <div class="brand-icon">🌊</div>
+    <h1>AQUALEVEL</h1>
+  </div>
+  <div class="nav-right">
+    <span class="nav-subtitle">WATER LEVEL MONITOR</span>
+    <div class="nav-user">Logged in as <span>{{ username }}</span></div>
+    <a href="/logout" class="logout-btn">LOGOUT</a>
+  </div>
+</nav>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     PASTE THIS IN YOUR <script> — Toast function + fetch wrapper
-     ═══════════════════════════════════════════════════════════════ -->
+<!-- Main Layout -->
+<div class="layout">
+
+  <!-- Left Panel -->
+  <div class="left-panel">
+
+    <div>
+      <div class="panel-label">Upload Image</div>
+      <div class="upload-zone" id="upload-zone">
+        <input type="file" id="image-input" accept="image/*"/>
+        <div class="upload-icon">🖼️</div>
+        <div class="upload-text">
+          <strong>Drop image here</strong><br>or click to browse
+        </div>
+        <div class="upload-hint">JPG, PNG, WEBP supported</div>
+      </div>
+
+      <div id="preview-wrap" style="margin-top:14px;">
+        <img id="preview-img" src="" alt="Preview"/>
+        <div class="preview-meta">
+          <span class="preview-name" id="preview-name"></span>
+          <span class="preview-change" id="change-btn">Change</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-analyse" id="analyse-btn" disabled>
+      <div class="spinner" id="spinner"></div>
+      <span id="btn-text">ANALYSE WATER LEVEL</span>
+    </button>
+
+    <div>
+      <div class="panel-label">Status Legend</div>
+      <div class="legend-card">
+        <div class="legend-row">
+          <div class="legend-left">
+            <div class="legend-dot safe"></div>
+            <span class="legend-name">SAFE</span>
+          </div>
+          <span class="legend-range">0 – 2.5 m</span>
+        </div>
+        <div class="legend-row">
+          <div class="legend-left">
+            <div class="legend-dot warning"></div>
+            <span class="legend-name">WARNING</span>
+          </div>
+          <span class="legend-range">2.5 – 4.0 m</span>
+        </div>
+        <div class="legend-row">
+          <div class="legend-left">
+            <div class="legend-dot danger"></div>
+            <span class="legend-name">DANGER</span>
+          </div>
+          <span class="legend-range">> 4.0 m</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right Panel -->
+  <div class="right-panel">
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card" id="card-level">
+        <div class="stat-label">Water Level</div>
+        <div class="stat-value placeholder" id="stat-level">—</div>
+        <div class="stat-sub" id="stat-level-sub">awaiting analysis</div>
+      </div>
+      <div class="stat-card" id="card-fill">
+        <div class="stat-label">Tank Fill</div>
+        <div class="stat-value placeholder" id="stat-fill">—</div>
+        <div class="stat-sub" id="stat-fill-sub">awaiting analysis</div>
+      </div>
+      <div class="stat-card" id="card-status">
+        <div class="stat-label">Status</div>
+        <div class="stat-value placeholder" id="stat-status">—</div>
+        <div class="stat-sub" id="stat-status-sub">awaiting analysis</div>
+      </div>
+    </div>
+
+    <!-- Result image -->
+    <div class="result-area" id="result-area">
+      <div class="result-placeholder" id="result-placeholder">
+        <div class="ph-icon">🏞️</div>
+        <p>Upload a river image to begin analysis</p>
+      </div>
+      <img id="result-img" src="" alt="Annotated Result"/>
+      <div class="result-footer" id="result-footer"></div>
+    </div>
+
+    <!-- Confidence bar -->
+    <div class="confidence-wrap" id="confidence-wrap">
+      <div class="conf-header">
+        <span class="conf-label">Detection Confidence</span>
+        <span class="conf-value" id="conf-value">—</span>
+      </div>
+      <div class="conf-track">
+        <div class="conf-fill" id="conf-fill"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script>
-// ── Toast utility ──
-function showToast(title, msg, type = 'error', duration = 4000) {
-  const toast = document.getElementById('toast');
-  document.getElementById('toast-title').textContent = title;
-  document.getElementById('toast-msg').textContent   = msg;
-  toast.className = type;
-  toast.style.display = 'block';
-  toast.style.animation = 'slideIn 0.3s ease';
-
-  clearTimeout(toast._timer);
-  toast._timer = setTimeout(() => {
-    toast.style.animation = 'slideOut 0.3s ease forwards';
-    setTimeout(() => { toast.style.display = 'none'; }, 300);
-  }, duration);
-}
-
-// ── Replace your existing fetch('/detect', ...) call with this wrapper ──
-// Find where you call fetch('/detect', { method: 'POST', body: formData })
-// and replace the .then() / response handling with the version below.
-
-async function analyseImage(formData) {
-  let response;
-  try {
-    response = await fetch('/detect', { method: 'POST', body: formData });
-  } catch (networkErr) {
-    showToast('Network Error', 'Could not reach the server. Check your connection.', 'error');
-    return;
+  // ── Toast ──
+  function showToast(title, msg, type = 'error', duration = 4000) {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-title').textContent = title;
+    document.getElementById('toast-msg').textContent   = msg;
+    t.className = type;
+    t.style.display = 'block';
+    t.style.animation = 'slideIn 0.3s ease';
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => {
+      t.style.animation = 'slideOut 0.3s ease forwards';
+      setTimeout(() => { t.style.display = 'none'; }, 300);
+    }, duration);
   }
 
-  // ── Session expired (401) ──
-  if (response.status === 401) {
-    const data = await response.json().catch(() => ({}));
-    if (data.session_expired) {
-      showToast(
-        'Session Expired',
-        'You have been logged out. Redirecting to login…',
-        'warning',
-        3000
-      );
-      setTimeout(() => { window.location.href = '/'; }, 3000);
+  // ── File handling ──
+  const imageInput  = document.getElementById('image-input');
+  const uploadZone  = document.getElementById('upload-zone');
+  const previewWrap = document.getElementById('preview-wrap');
+  const previewImg  = document.getElementById('preview-img');
+  const previewName = document.getElementById('preview-name');
+  const analyseBtn  = document.getElementById('analyse-btn');
+  const btnText     = document.getElementById('btn-text');
+  const spinner     = document.getElementById('spinner');
+
+  uploadZone.addEventListener('dragover',  e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+  uploadZone.addEventListener('dragleave', ()  => uploadZone.classList.remove('dragover'));
+  uploadZone.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadZone.classList.remove('dragover');
+    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+
+  imageInput.addEventListener('change', () => {
+    if (imageInput.files[0]) handleFile(imageInput.files[0]);
+  });
+
+  document.getElementById('change-btn').addEventListener('click', () => {
+    imageInput.value = '';
+    previewWrap.style.display = 'none';
+    uploadZone.style.display = 'block';
+    analyseBtn.disabled = true;
+    btnText.textContent = 'ANALYSE WATER LEVEL';
+  });
+
+  function handleFile(file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      previewImg.src = e.target.result;
+      previewName.textContent = file.name;
+      uploadZone.style.display = 'none';
+      previewWrap.style.display = 'block';
+      analyseBtn.disabled = false;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ── Analyse ──
+  analyseBtn.addEventListener('click', async () => {
+    const file = imageInput.files[0];
+    if (!file) { showToast('No Image', 'Please select a river image first.', 'warning'); return; }
+
+    analyseBtn.disabled = true;
+    spinner.style.display = 'block';
+    btnText.textContent = 'ANALYSING…';
+
+    const fd = new FormData();
+    fd.append('image', file);
+
+    let response;
+    try {
+      response = await fetch('/detect', { method: 'POST', body: fd });
+    } catch (err) {
+      showToast('Network Error', 'Could not reach the server.', 'error');
+      resetBtn(); return;
+    }
+
+    if (response.redirected || response.status === 302) {
+      window.location.href = '/';
       return;
     }
+
+    const data = await response.json().catch(() => ({}));
+    resetBtn();
+
+    if (data.error) {
+      showToast('Detection Failed', data.error, 'error');
+      return;
+    }
+
+    // ── Update stats ──
+    const statusClass = data.status.toLowerCase();
+
+    const statLevel = document.getElementById('stat-level');
+    statLevel.textContent = data.level_meters + 'm';
+    statLevel.className = 'stat-value ' + statusClass;
+    document.getElementById('stat-level-sub').textContent = 'detected height';
+    document.getElementById('card-level').classList.add('active');
+
+    const statFill = document.getElementById('stat-fill');
+    statFill.textContent = data.level_percent + '%';
+    statFill.className = 'stat-value ' + statusClass;
+    document.getElementById('stat-fill-sub').textContent = 'of scale height';
+    document.getElementById('card-fill').classList.add('active');
+
+    const statStatus = document.getElementById('stat-status');
+    statStatus.textContent = data.status;
+    statStatus.className = 'stat-value ' + statusClass;
+    document.getElementById('stat-status-sub').textContent = data.clarity + ' water';
+    document.getElementById('card-status').classList.add('active');
+
+    // ── Show annotated image ──
+    const resultImg = document.getElementById('result-img');
+    resultImg.src = data.image_url + '?t=' + Date.now();
+    resultImg.style.display = 'block';
+    document.getElementById('result-placeholder').style.display = 'none';
+
+    const footer = document.getElementById('result-footer');
+    footer.textContent = `${file.name}  ·  ${data.level_meters}m detected  ·  scale 0.5m`;
+    footer.style.display = 'block';
+
+    // ── Confidence bar ──
+    const confWrap = document.getElementById('confidence-wrap');
+    confWrap.style.display = 'block';
+    document.getElementById('conf-value').textContent = (data.confidence || 0) + '%';
+    setTimeout(() => {
+      document.getElementById('conf-fill').style.width = (data.confidence || 0) + '%';
+    }, 100);
+
+    showToast('Analysis Complete', `Water level: ${data.level_percent}% — ${data.status}`, 'success', 3500);
+  });
+
+  function resetBtn() {
+    analyseBtn.disabled = false;
+    spinner.style.display = 'none';
+    btnText.textContent = 'ANALYSE WATER LEVEL';
   }
-
-  const data = await response.json().catch(() => ({}));
-
-  // ── Detection error ──
-  if (data.error) {
-    showToast('Detection Failed', data.error, 'error');
-    return;
-  }
-
-  // ── Success — update your UI here ──
-  // Example:
-  // document.getElementById('result-level').textContent = data.level_percent + '%';
-  // document.getElementById('result-status').textContent = data.status;
-  // document.getElementById('result-clarity').textContent = data.clarity;   // NEW: "clear" / "murky" / "muddy"
-  // document.getElementById('result-image').src = data.image_url;
-  console.log('Detection result:', data);
-}
-
-// ── Hook this to your Analyse button ──
-// Replace your existing submit/click handler with:
-//
-// document.getElementById('analyse-btn').addEventListener('click', () => {
-//   const file = document.getElementById('image-input').files[0];
-//   if (!file) { showToast('No Image', 'Please select an image first.', 'warning'); return; }
-//   const fd = new FormData();
-//   fd.append('image', file);
-//   analyseImage(fd);
-// });
 </script>
+</body>
+</html>
