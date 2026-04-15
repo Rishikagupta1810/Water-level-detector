@@ -27,9 +27,7 @@
     .field input:focus { border-color: var(--accent); background: #fff; }
     .field input.invalid { border-color: var(--danger); }
 
-    .hint { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
-
-    /* ── inline error box — same style for all fields ── */
+    /* ── error box always directly below input, hint always below error ── */
     .field-error {
       display: none;
       margin-top: 6px;
@@ -42,11 +40,13 @@
     }
     .field-error.show { display: block; }
 
+    .hint { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
+
     .btn { width: 100%; padding: 11px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; cursor: pointer; margin-top: 6px; transition: opacity .2s; }
     .btn:hover { opacity: .88; }
 
+    /* top-level flash only for success (account created) */
     .flash { padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; margin-bottom: 18px; }
-    .flash.error   { background: #fff5f5; border: 1px solid #fecaca; color: var(--danger); }
     .flash.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: var(--success); }
 
     .footer-link { text-align: center; margin-top: 20px; font-size: 0.82rem; color: var(--muted); }
@@ -69,9 +69,21 @@
   <div class="card">
     <div class="card-title">Create your account</div>
 
+    {# Only show success flash at top. Error flashes are mapped inline by JS below. #}
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% for category, message in messages %}
-        <div class="flash {{ category }}">{{ message }}</div>
+        {% if category == 'success' %}
+          <div class="flash success">{{ message }}</div>
+        {% endif %}
+      {% endfor %}
+    {% endwith %}
+
+    {# Pass server-side error messages as data attributes so JS can place them inline #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        {% if category == 'error' %}
+          <span id="server-error" data-msg="{{ message }}" style="display:none"></span>
+        {% endif %}
       {% endfor %}
     {% endwith %}
 
@@ -79,35 +91,33 @@
 
       <div class="field">
         <label>Username</label>
-        <input type="text" name="username" id="username" placeholder="Choose a username" required autofocus/>
+        <input type="text" name="username" id="username"
+               placeholder="Choose a username" required autofocus
+               value="{{ request.form.get('username', '') }}"/>
         <div class="field-error" id="err-username"></div>
         <div class="hint">Minimum 3 characters</div>
       </div>
 
       <div class="field">
         <label>Email</label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="your@email.com"
-          required
-          pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
-          title="Enter a valid email address (e.g. user@example.com)"
-        />
+        <input type="email" name="email" id="email"
+               placeholder="your@email.com" required
+               value="{{ request.form.get('email', '') }}"/>
         <div class="field-error" id="err-email"></div>
       </div>
 
       <div class="field">
         <label>Password</label>
-        <input type="password" name="password" id="password" placeholder="Create a password" required minlength="6"/>
+        <input type="password" name="password" id="password"
+               placeholder="Create a password" required/>
         <div class="field-error" id="err-password"></div>
         <div class="hint">Minimum 6 characters</div>
       </div>
 
       <div class="field">
         <label>Confirm Password</label>
-        <input type="password" name="confirm_password" id="confirm_password" placeholder="Repeat your password" required/>
+        <input type="password" name="confirm_password" id="confirm_password"
+               placeholder="Repeat your password" required/>
         <div class="field-error" id="err-confirm"></div>
       </div>
 
@@ -122,6 +132,8 @@
   </div>
 
 <script>
+  const EMAIL_RE = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+
   function showError(fieldId, errId, msg) {
     const input = document.getElementById(fieldId);
     const err   = document.getElementById(errId);
@@ -131,32 +143,45 @@
   }
 
   function clearError(fieldId, errId) {
-    const input = document.getElementById(fieldId);
-    const err   = document.getElementById(errId);
-    input.classList.remove('invalid');
-    err.classList.remove('show');
+    document.getElementById(fieldId).classList.remove('invalid');
+    document.getElementById(errId).classList.remove('show');
   }
 
-  // Clear errors on input
-  document.getElementById('username').addEventListener('input', () => clearError('username', 'err-username'));
-  document.getElementById('email').addEventListener('input', () => clearError('email', 'err-email'));
-  document.getElementById('password').addEventListener('input', () => clearError('password', 'err-password'));
-  document.getElementById('confirm_password').addEventListener('input', () => clearError('confirm_password', 'err-confirm'));
+  // ── Map server-side flash error to the correct inline field ──
+  const serverErr = document.getElementById('server-error');
+  if (serverErr) {
+    const msg = serverErr.dataset.msg;
+    if (msg.toLowerCase().includes('username')) {
+      showError('username', 'err-username', msg);
+    } else if (msg.toLowerCase().includes('email')) {
+      showError('email', 'err-email', msg);
+    } else if (msg.toLowerCase().includes('password')) {
+      showError('password', 'err-password', msg);
+    } else {
+      // Fallback: show under username
+      showError('username', 'err-username', msg);
+    }
+  }
 
+  // ── Clear on user input ──
+  document.getElementById('username').addEventListener('input',          () => clearError('username',         'err-username'));
+  document.getElementById('email').addEventListener('input',             () => clearError('email',            'err-email'));
+  document.getElementById('password').addEventListener('input',          () => clearError('password',         'err-password'));
+  document.getElementById('confirm_password').addEventListener('input',  () => clearError('confirm_password', 'err-confirm'));
+
+  // ── Client-side submit validation ──
   document.getElementById('reg-form').addEventListener('submit', function(e) {
     let valid = true;
-
     const username = document.getElementById('username').value.trim();
     const email    = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const confirm  = document.getElementById('confirm_password').value;
-    const emailPattern = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 
     if (username.length < 3) {
       showError('username', 'err-username', 'Username must be at least 3 characters.'); valid = false;
     }
-    if (!emailPattern.test(email)) {
-      showError('email', 'err-email', 'Enter a valid email address (e.g. user@example.com).'); valid = false;
+    if (!EMAIL_RE.test(email)) {
+      showError('email', 'err-email', 'Enter a valid email (e.g. user@example.com).'); valid = false;
     }
     if (password.length < 6) {
       showError('password', 'err-password', 'Password must be at least 6 characters.'); valid = false;

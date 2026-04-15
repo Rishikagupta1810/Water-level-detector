@@ -1,5 +1,5 @@
 """
-Flask app — now includes authentication.
+Flask app — with authentication + session-expiry toast support.
 Routes:
   GET  /           → login page (redirects to /detect if already logged in)
   POST /login      → handle login form
@@ -46,8 +46,13 @@ def login_required(f):
     def decorated(*args, **kwargs):
         if "user_id" not in session:
             logger.warning("Unauthenticated access to: %s", request.path)
+            # Always return JSON with session_expired flag for POST/AJAX —
+            # the frontend will show a toast and redirect to login.
             if request.method == "POST" or request.headers.get("X-Requested-With") == "XMLHttpRequest":
-                return jsonify({"session_expired": True, "error": "Session expired. Please log in again."}), 401
+                return jsonify({
+                    "session_expired": True,
+                    "error": "Your session has expired. Please log in again."
+                }), 401
             return redirect(url_for("login_page"))
         return f(*args, **kwargs)
     return decorated
@@ -89,22 +94,18 @@ def register():
     password = request.form.get("password", "")
     confirm  = request.form.get("confirm_password", "")
 
-    # ── Username length validation ──
     if len(username) < 3:
         flash("Username must be at least 3 characters.", "error")
         return redirect(url_for("register_page"))
 
-    # ── Email format validation ──
     if not is_valid_email(email):
         flash("Please enter a valid email address (e.g. user@example.com).", "error")
         return redirect(url_for("register_page"))
 
-    # ── Password length validation ──
     if len(password) < 6:
         flash("Password must be at least 6 characters.", "error")
         return redirect(url_for("register_page"))
 
-    # ── Password match validation ──
     if password != confirm:
         flash("Passwords do not match.", "error")
         return redirect(url_for("register_page"))
@@ -157,6 +158,7 @@ def detect():
         "level_meters":  result["level_meters"],
         "level_percent": result["level_percent"],
         "status":        result["status"],
+        "clarity":       result.get("clarity", "unknown"),
         "image_url":     "/" + filepath,
     })
 
@@ -164,3 +166,4 @@ def detect():
 if __name__ == "__main__":
     logger.info("Starting AquaLevel Flask app")
     app.run(debug=True)
+    
