@@ -611,3 +611,732 @@
 2026-04-15 01:46:57 | INFO     | werkzeug                       | 10.86.115.230 - - [15/Apr/2026 01:46:57] "GET /static/uploads/image.jpg?t=1776197817178 HTTP/1.1" 200 -
 2026-04-15 02:09:46 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
 2026-04-15 02:09:46 | INFO     | auth.user_model                | Database ready | path=database\users.db
+2026-04-15 04:47:20 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 04:47:20 | INFO     | auth.user_model                | Database ready | path=database\users.db
+2026-04-15 04:47:20 | INFO     | __main__                       | Starting AquaLevel Flask app
+2026-04-15 04:47:20 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-15 04:47:20 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-15 04:47:20 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 04:47:21 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 04:47:21 | INFO     | auth.user_model                | Database ready | path=database\users.db
+2026-04-15 04:47:21 | INFO     | __main__                       | Starting AquaLevel Flask app
+2026-04-15 04:47:21 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-15 04:47:21 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-15 04:47:28 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:47:28] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-15 04:47:29 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:47:29] "GET /detect HTTP/1.1" 200 -
+2026-04-15 04:47:29 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:47:29] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-15 04:48:23 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (3).jpeg, original_size=(151x180)
+2026-04-15 04:48:23 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.667, padded_to=(640x480)
+2026-04-15 04:48:23 | INFO     | detector.water_level_detector  | Starting detection | image shape=(480, 640, 3)
+2026-04-15 04:48:23 | DEBUG    | detector.water_level_detector  | Sky removed | cutoff_y=168 (top 35%)
+2026-04-15 04:48:23 | INFO     | detector.water_level_detector  | Sky removed | cutoff_y=168
+2026-04-15 04:48:24 | DEBUG    | detector.water_level_detector  | ColorDetector | water pixels=93042
+2026-04-15 04:48:24 | DEBUG    | detector.water_level_detector  | ColorDetector | surface at y=168
+2026-04-15 04:48:24 | INFO     | detector.water_level_detector  | ColorDetector voted | y=168
+2026-04-15 04:48:24 | DEBUG    | detector.water_level_detector  | TextureDetector | surface at y=160 (block_row=10)
+2026-04-15 04:48:24 | INFO     | detector.water_level_detector  | TextureDetector voted | y=160
+2026-04-15 04:48:24 | INFO     | detector.water_level_detector  | Both strategies agree | averaged y=164 (diff=8px)
+2026-04-15 04:48:24 | INFO     | detector.water_level_detector  | Final result | water_y=164 | level=3.29m (65.8%) | status=WARNING
+2026-04-15 04:48:24 | DEBUG    | detector.image_processor       | Drew water line at y=164 with color=(0, 165, 255)
+2026-04-15 04:48:24 | DEBUG    | detector.image_processor       | Drew scale bar. fill up to 3.29m, danger zone above 4m
+2026-04-15 04:48:24 | INFO     | detector.image_processor       | Saved annotated image to: static/uploads\OIP (3).jpeg
+2026-04-15 04:48:24 | INFO     | __main__                       | Detection done | file=OIP (3).jpeg | level=3.29m | status=WARNING | user=Rishika
+2026-04-15 04:48:24 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:48:24] "POST /detect HTTP/1.1" 200 -
+2026-04-15 04:48:24 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:48:24] "GET /static/uploads/OIP%20(3).jpeg?t=1776208704157 HTTP/1.1" 200 -
+2026-04-15 04:51:01 | INFO     | __main__                       | User logged out | username=Rishika
+2026-04-15 04:51:01 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:51:01] "[32mGET /logout HTTP/1.1[0m" 302 -
+2026-04-15 04:51:01 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:51:01] "GET / HTTP/1.1" 200 -
+2026-04-15 04:51:16 | INFO     | __main__                       | Login attempt | username=rishi@*U*(Y(*&^TE&(T
+2026-04-15 04:51:16 | WARNING  | auth.user_model                | Login failed — username not found: rishi@*U*(Y(*&^TE&(T
+2026-04-15 04:51:16 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:51:16] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-04-15 04:51:16 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:51:16] "GET / HTTP/1.1" 200 -
+2026-04-15 04:51:41 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:51:41] "GET /register HTTP/1.1" 200 -
+2026-04-15 04:54:23 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:54:23] "GET / HTTP/1.1" 200 -
+2026-04-15 04:54:28 | INFO     | __main__                       | Login attempt | username=Rishika
+2026-04-15 04:54:29 | INFO     | auth.user_model                | Login successful | username=Rishika
+2026-04-15 04:54:29 | INFO     | __main__                       | Session created | username=Rishika
+2026-04-15 04:54:29 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:54:29] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-04-15 04:54:29 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:54:29] "GET /detect HTTP/1.1" 200 -
+2026-04-15 04:54:44 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (3).jpeg, original_size=(151x180)
+2026-04-15 04:54:44 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.667, padded_to=(640x480)
+2026-04-15 04:54:44 | INFO     | detector.water_level_detector  | Starting detection | image shape=(480, 640, 3)
+2026-04-15 04:54:44 | DEBUG    | detector.water_level_detector  | Sky removed | cutoff_y=168 (top 35%)
+2026-04-15 04:54:44 | INFO     | detector.water_level_detector  | Sky removed | cutoff_y=168
+2026-04-15 04:54:44 | DEBUG    | detector.water_level_detector  | ColorDetector | water pixels=93042
+2026-04-15 04:54:44 | DEBUG    | detector.water_level_detector  | ColorDetector | surface at y=168
+2026-04-15 04:54:44 | INFO     | detector.water_level_detector  | ColorDetector voted | y=168
+2026-04-15 04:54:44 | DEBUG    | detector.water_level_detector  | TextureDetector | surface at y=160 (block_row=10)
+2026-04-15 04:54:44 | INFO     | detector.water_level_detector  | TextureDetector voted | y=160
+2026-04-15 04:54:44 | INFO     | detector.water_level_detector  | Both strategies agree | averaged y=164 (diff=8px)
+2026-04-15 04:54:44 | INFO     | detector.water_level_detector  | Final result | water_y=164 | level=3.29m (65.8%) | status=WARNING
+2026-04-15 04:54:44 | DEBUG    | detector.image_processor       | Drew water line at y=164 with color=(0, 165, 255)
+2026-04-15 04:54:44 | DEBUG    | detector.image_processor       | Drew scale bar. fill up to 3.29m, danger zone above 4m
+2026-04-15 04:54:44 | INFO     | detector.image_processor       | Saved annotated image to: static/uploads\OIP (3).jpeg
+2026-04-15 04:54:44 | INFO     | __main__                       | Detection done | file=OIP (3).jpeg | level=3.29m | status=WARNING | user=Rishika
+2026-04-15 04:54:44 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:54:44] "POST /detect HTTP/1.1" 200 -
+2026-04-15 04:54:44 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 04:54:44] "GET /static/uploads/OIP%20(3).jpeg?t=1776209084334 HTTP/1.1" 200 -
+2026-04-15 05:00:29 | INFO     | __main__                       | User logged out | username=Rishika
+2026-04-15 05:00:29 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 05:00:29] "[32mGET /logout HTTP/1.1[0m" 302 -
+2026-04-15 05:00:29 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 05:00:29] "GET / HTTP/1.1" 200 -
+2026-04-15 05:00:42 | INFO     | __main__                       | Login attempt | username=Rishika
+2026-04-15 05:00:42 | INFO     | auth.user_model                | Login successful | username=Rishika
+2026-04-15 05:00:42 | INFO     | __main__                       | Session created | username=Rishika
+2026-04-15 05:00:42 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 05:00:42] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-04-15 05:00:42 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 05:00:42] "GET /detect HTTP/1.1" 200 -
+2026-04-15 05:11:07 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\detector\\water_level_detector.py', reloading
+2026-04-15 05:11:07 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 05:11:08 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 12:41:02 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 12:41:02 | WARNING  | detector.water_level_detector  | Model files not found. Object detection running in fallback mode.
+2026-04-15 12:41:02 | INFO     | auth.user_model                | Database ready | path=database\users.db
+2026-04-15 12:41:02 | INFO     | __main__                       | Starting AquaLevel Flask app
+2026-04-15 12:41:02 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-15 12:41:02 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-15 12:41:02 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 12:41:02 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 12:41:02 | WARNING  | detector.water_level_detector  | Model files not found. Object detection running in fallback mode.
+2026-04-15 12:41:02 | INFO     | auth.user_model                | Database ready | path=database\users.db
+2026-04-15 12:41:02 | INFO     | __main__                       | Starting AquaLevel Flask app
+2026-04-15 12:41:02 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-15 12:41:02 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-15 12:41:09 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:41:09] "GET / HTTP/1.1" 200 -
+2026-04-15 12:41:10 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:41:10] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-15 12:41:13 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:41:13] "GET / HTTP/1.1" 200 -
+2026-04-15 12:41:18 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:41:18] "GET / HTTP/1.1" 200 -
+2026-04-15 12:41:19 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:41:19] "GET / HTTP/1.1" 200 -
+2026-04-15 12:41:20 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:41:20] "GET / HTTP/1.1" 200 -
+2026-04-15 12:41:36 | WARNING  | auth.user_model                | Registration failed — username taken: Rishika
+2026-04-15 12:41:36 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:41:36] "[32mPOST /register HTTP/1.1[0m" 302 -
+2026-04-15 12:41:36 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:41:36] "GET /register HTTP/1.1" 200 -
+2026-04-15 12:42:01 | INFO     | auth.user_model                | New user registered | username=priya | email=rishikadashore86128@gmail.com
+2026-04-15 12:42:01 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:01] "[32mPOST /register HTTP/1.1[0m" 302 -
+2026-04-15 12:42:01 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:01] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:05 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:05] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:07 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:07] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:08 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:08] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:08 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:08] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:08 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:08] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:09 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:09] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:32 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:32] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:32 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:32] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:33 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:33] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:33 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:33] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:33 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:33] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:33 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:33] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:34 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:34] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:34 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:34] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:34 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:34] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:34 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:34] "GET / HTTP/1.1" 200 -
+2026-04-15 12:42:34 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 12:42:34] "GET / HTTP/1.1" 200 -
+2026-04-15 13:25:31 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:25:31] "GET / HTTP/1.1" 200 -
+2026-04-15 13:37:01 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\auth\\user_model.py', reloading
+2026-04-15 13:37:01 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 13:37:02 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 13:37:02 | WARNING  | detector.water_level_detector  | Model files not found. Object detection running in fallback mode.
+2026-04-15 13:37:02 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 13:37:02 | INFO     | __main__                       | Starting AquaLevel Flask app
+2026-04-15 13:37:02 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-15 13:37:02 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-15 13:38:23 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 13:38:23 | WARNING  | detector.water_level_detector  | Model files not found. Object detection running in fallback mode.
+2026-04-15 13:38:23 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 13:38:23 | INFO     | __main__                       | Starting AquaLevel Flask app
+2026-04-15 13:38:23 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-15 13:38:23 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-15 13:38:23 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 13:38:23 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 13:38:23 | WARNING  | detector.water_level_detector  | Model files not found. Object detection running in fallback mode.
+2026-04-15 13:38:23 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 13:38:23 | INFO     | __main__                       | Starting AquaLevel Flask app
+2026-04-15 13:38:23 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-15 13:38:23 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-15 13:38:26 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:38:26] "GET / HTTP/1.1" 200 -
+2026-04-15 13:38:33 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:38:33] "GET /register HTTP/1.1" 200 -
+2026-04-15 13:38:56 | INFO     | auth.user_model                | New user registered | username=priy | email=rishikadashore883968@gmail.com
+2026-04-15 13:38:56 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:38:56] "[32mPOST /register HTTP/1.1[0m" 302 -
+2026-04-15 13:38:56 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:38:56] "GET / HTTP/1.1" 200 -
+2026-04-15 13:39:04 | INFO     | __main__                       | Login attempt | username=priy
+2026-04-15 13:39:04 | INFO     | auth.user_model                | Login successful | username=priy
+2026-04-15 13:39:04 | INFO     | __main__                       | Session created | username=priy
+2026-04-15 13:39:04 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:39:04] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-04-15 13:39:05 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:39:05] "GET /detect HTTP/1.1" 200 -
+2026-04-15 13:39:12 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:39:12] "GET /detect HTTP/1.1" 200 -
+2026-04-15 13:39:13 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:39:13] "GET /detect HTTP/1.1" 200 -
+2026-04-15 13:47:33 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:47:33] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-15 13:47:33 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:47:33] "GET /detect HTTP/1.1" 200 -
+2026-04-15 13:47:38 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:47:38] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-15 13:47:38 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:47:38] "GET /detect HTTP/1.1" 200 -
+2026-04-15 13:47:47 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 13:47:47 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 13:47:48 | DEBUG    | detector.image_processor       | Drew water line at y=75 with color=(0, 0, 220)
+2026-04-15 13:47:48 | DEBUG    | detector.image_processor       | Drew scale bar. fill up to 4.22m, danger zone above 4m
+2026-04-15 13:47:48 | INFO     | detector.image_processor       | Saved annotated image to: static/uploads\OIP (1).jpeg
+2026-04-15 13:47:48 | INFO     | __main__                       | Detection done | file=OIP (1).jpeg | level=4.22m | status=DANGER | user=priy
+2026-04-15 13:47:48 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:47:48] "POST /detect HTTP/1.1" 200 -
+2026-04-15 13:47:48 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 13:47:48] "GET /static/uploads/OIP%20(1).jpeg?t=1776241068075 HTTP/1.1" 200 -
+2026-04-15 14:04:58 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\detector\\water_level_detector.py', reloading
+2026-04-15 14:04:58 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 14:04:58 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\detector\\water_level_detector.py', reloading
+2026-04-15 14:04:59 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 14:39:49 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 14:39:49 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 14:39:49 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-15 14:39:49 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-15 14:39:49 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 14:39:50 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 14:39:50 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 14:39:50 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-15 14:39:50 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-15 14:39:53 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:39:53] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-15 14:39:53 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:39:53] "GET /detect HTTP/1.1" 200 -
+2026-04-15 14:40:00 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:00] "[32mGET /logout HTTP/1.1[0m" 302 -
+2026-04-15 14:40:01 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:01] "GET / HTTP/1.1" 200 -
+2026-04-15 14:40:08 | INFO     | auth.user_model                | Login successful | username=Rishika
+2026-04-15 14:40:08 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:08] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-04-15 14:40:08 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:08] "GET /detect HTTP/1.1" 200 -
+2026-04-15 14:40:14 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:40:14 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:40:14 | INFO     | detector.water_level_detector  | Water pixel coverage: 40.0%
+2026-04-15 14:40:14 | INFO     | detector.water_level_detector  | Waterline at y=54 (11.2% from top), confidence=1.00
+2026-04-15 14:40:14 | INFO     | detector.water_level_detector  | Result: waterline_y=54, level=88.8%, 4.44m, status=DANGER, clarity=clear
+2026-04-15 14:40:14 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:14] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:40:15 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:40:15 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:40:15 | INFO     | detector.water_level_detector  | Water pixel coverage: 40.0%
+2026-04-15 14:40:15 | INFO     | detector.water_level_detector  | Waterline at y=54 (11.2% from top), confidence=1.00
+2026-04-15 14:40:15 | INFO     | detector.water_level_detector  | Result: waterline_y=54, level=88.8%, 4.44m, status=DANGER, clarity=clear
+2026-04-15 14:40:15 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:15] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:40:15 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:40:15 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:40:15 | INFO     | detector.water_level_detector  | Water pixel coverage: 40.0%
+2026-04-15 14:40:15 | INFO     | detector.water_level_detector  | Waterline at y=54 (11.2% from top), confidence=1.00
+2026-04-15 14:40:15 | INFO     | detector.water_level_detector  | Result: waterline_y=54, level=88.8%, 4.44m, status=DANGER, clarity=clear
+2026-04-15 14:40:15 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:15] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:40:16 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:40:16 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:40:16 | INFO     | detector.water_level_detector  | Water pixel coverage: 40.0%
+2026-04-15 14:40:16 | INFO     | detector.water_level_detector  | Waterline at y=54 (11.2% from top), confidence=1.00
+2026-04-15 14:40:16 | INFO     | detector.water_level_detector  | Result: waterline_y=54, level=88.8%, 4.44m, status=DANGER, clarity=clear
+2026-04-15 14:40:16 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:16] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:40:16 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:40:16 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:40:16 | INFO     | detector.water_level_detector  | Water pixel coverage: 40.0%
+2026-04-15 14:40:16 | INFO     | detector.water_level_detector  | Waterline at y=54 (11.2% from top), confidence=1.00
+2026-04-15 14:40:16 | INFO     | detector.water_level_detector  | Result: waterline_y=54, level=88.8%, 4.44m, status=DANGER, clarity=clear
+2026-04-15 14:40:16 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:16] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:40:16 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:40:16 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:40:16 | INFO     | detector.water_level_detector  | Water pixel coverage: 40.0%
+2026-04-15 14:40:16 | INFO     | detector.water_level_detector  | Waterline at y=54 (11.2% from top), confidence=1.00
+2026-04-15 14:40:16 | INFO     | detector.water_level_detector  | Result: waterline_y=54, level=88.8%, 4.44m, status=DANGER, clarity=clear
+2026-04-15 14:40:16 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:16] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:40:16 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:40:16 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:40:16 | INFO     | detector.water_level_detector  | Water pixel coverage: 40.0%
+2026-04-15 14:40:16 | INFO     | detector.water_level_detector  | Waterline at y=54 (11.2% from top), confidence=1.00
+2026-04-15 14:40:16 | INFO     | detector.water_level_detector  | Result: waterline_y=54, level=88.8%, 4.44m, status=DANGER, clarity=clear
+2026-04-15 14:40:17 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:17] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:40:17 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:40:17 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:40:17 | INFO     | detector.water_level_detector  | Water pixel coverage: 40.0%
+2026-04-15 14:40:17 | INFO     | detector.water_level_detector  | Waterline at y=54 (11.2% from top), confidence=1.00
+2026-04-15 14:40:17 | INFO     | detector.water_level_detector  | Result: waterline_y=54, level=88.8%, 4.44m, status=DANGER, clarity=clear
+2026-04-15 14:40:17 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:17] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:40:17 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:40:17 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:40:17 | INFO     | detector.water_level_detector  | Water pixel coverage: 40.0%
+2026-04-15 14:40:17 | INFO     | detector.water_level_detector  | Waterline at y=54 (11.2% from top), confidence=1.00
+2026-04-15 14:40:17 | INFO     | detector.water_level_detector  | Result: waterline_y=54, level=88.8%, 4.44m, status=DANGER, clarity=clear
+2026-04-15 14:40:17 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:17] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:40:17 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:40:17 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:40:17 | INFO     | detector.water_level_detector  | Water pixel coverage: 40.0%
+2026-04-15 14:40:17 | INFO     | detector.water_level_detector  | Waterline at y=54 (11.2% from top), confidence=1.00
+2026-04-15 14:40:17 | INFO     | detector.water_level_detector  | Result: waterline_y=54, level=88.8%, 4.44m, status=DANGER, clarity=clear
+2026-04-15 14:40:17 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:17] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:40:17 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:40:17 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:40:17 | INFO     | detector.water_level_detector  | Water pixel coverage: 40.0%
+2026-04-15 14:40:17 | INFO     | detector.water_level_detector  | Waterline at y=54 (11.2% from top), confidence=1.00
+2026-04-15 14:40:17 | INFO     | detector.water_level_detector  | Result: waterline_y=54, level=88.8%, 4.44m, status=DANGER, clarity=clear
+2026-04-15 14:40:17 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:17] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:40:20 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:40:20 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:40:20 | INFO     | detector.water_level_detector  | Water pixel coverage: 40.0%
+2026-04-15 14:40:20 | INFO     | detector.water_level_detector  | Waterline at y=54 (11.2% from top), confidence=1.00
+2026-04-15 14:40:20 | INFO     | detector.water_level_detector  | Result: waterline_y=54, level=88.8%, 4.44m, status=DANGER, clarity=clear
+2026-04-15 14:40:20 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:20] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:40:38 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:40:38 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:40:38 | INFO     | detector.water_level_detector  | Water pixel coverage: 40.0%
+2026-04-15 14:40:38 | INFO     | detector.water_level_detector  | Waterline at y=54 (11.2% from top), confidence=1.00
+2026-04-15 14:40:38 | INFO     | detector.water_level_detector  | Result: waterline_y=54, level=88.8%, 4.44m, status=DANGER, clarity=clear
+2026-04-15 14:40:38 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:38] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:40:42 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:42] "GET /detect HTTP/1.1" 200 -
+2026-04-15 14:40:58 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\pexels-pixabay-219972.jpg, original_size=(2400x1650)
+2026-04-15 14:40:58 | INFO     | detector.image_processor       | Resized to fit frame: scale=0.267, padded_to=(640x480)
+2026-04-15 14:40:58 | INFO     | detector.water_level_detector  | Water pixel coverage: 45.8%
+2026-04-15 14:40:58 | INFO     | detector.water_level_detector  | Waterline at y=20 (4.2% from top), confidence=1.00
+2026-04-15 14:40:58 | INFO     | detector.water_level_detector  | Result: waterline_y=20, level=95.8%, 4.79m, status=DANGER, clarity=clear
+2026-04-15 14:40:58 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:40:58] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:41:00 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\pexels-pixabay-219972.jpg, original_size=(2400x1650)
+2026-04-15 14:41:00 | INFO     | detector.image_processor       | Resized to fit frame: scale=0.267, padded_to=(640x480)
+2026-04-15 14:41:00 | INFO     | detector.water_level_detector  | Water pixel coverage: 45.8%
+2026-04-15 14:41:00 | INFO     | detector.water_level_detector  | Waterline at y=20 (4.2% from top), confidence=1.00
+2026-04-15 14:41:00 | INFO     | detector.water_level_detector  | Result: waterline_y=20, level=95.8%, 4.79m, status=DANGER, clarity=clear
+2026-04-15 14:41:00 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:41:00] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:41:02 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\pexels-pixabay-219972.jpg, original_size=(2400x1650)
+2026-04-15 14:41:02 | INFO     | detector.image_processor       | Resized to fit frame: scale=0.267, padded_to=(640x480)
+2026-04-15 14:41:02 | INFO     | detector.water_level_detector  | Water pixel coverage: 45.8%
+2026-04-15 14:41:02 | INFO     | detector.water_level_detector  | Waterline at y=20 (4.2% from top), confidence=1.00
+2026-04-15 14:41:02 | INFO     | detector.water_level_detector  | Result: waterline_y=20, level=95.8%, 4.79m, status=DANGER, clarity=clear
+2026-04-15 14:41:02 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:41:02] "[35m[1mPOST /detect HTTP/1.1[0m" 500 -
+2026-04-15 14:42:40 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\detector\\water_level_detector.py', reloading
+2026-04-15 14:42:40 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 14:43:02 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 14:43:02 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 14:43:02 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-15 14:43:02 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-15 14:43:02 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 14:43:02 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 14:43:02 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 14:43:02 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-15 14:43:02 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-15 14:43:06 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:43:06] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-15 14:43:06 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:43:06] "GET /detect HTTP/1.1" 200 -
+2026-04-15 14:43:09 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:43:09] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-15 14:43:09 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:43:09] "GET /detect HTTP/1.1" 200 -
+2026-04-15 14:43:16 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:43:16] "[32mGET /logout HTTP/1.1[0m" 302 -
+2026-04-15 14:43:16 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:43:16] "GET / HTTP/1.1" 200 -
+2026-04-15 14:43:24 | INFO     | auth.user_model                | Login successful | username=Rishika
+2026-04-15 14:43:24 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:43:24] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-04-15 14:43:24 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:43:24] "GET /detect HTTP/1.1" 200 -
+2026-04-15 14:43:33 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:43:33 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:43:33 | DEBUG    | detector.image_processor       | Drew water line at y=201 with color=(0, 165, 255)
+2026-04-15 14:43:33 | DEBUG    | detector.image_processor       | Drew scale bar. fill up to 2.91m, danger zone above 4m
+2026-04-15 14:43:33 | INFO     | detector.image_processor       | Saved annotated image to: static/uploads\OIP (1).jpeg
+2026-04-15 14:43:33 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:43:33] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:43:34 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:43:34] "GET /static/uploads/OIP%20(1).jpeg?v=1776244413.84357?t=1776244413862 HTTP/1.1" 200 -
+2026-04-15 14:44:12 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:44:12] "[32mGET /logout HTTP/1.1[0m" 302 -
+2026-04-15 14:44:12 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:44:12] "GET / HTTP/1.1" 200 -
+2026-04-15 14:44:16 | INFO     | auth.user_model                | Login successful | username=Rishika
+2026-04-15 14:44:16 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:44:16] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-04-15 14:44:16 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:44:16] "GET /detect HTTP/1.1" 200 -
+2026-04-15 14:44:23 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\pexels-pixabay-219972.jpg, original_size=(2400x1650)
+2026-04-15 14:44:23 | INFO     | detector.image_processor       | Resized to fit frame: scale=0.267, padded_to=(640x480)
+2026-04-15 14:44:23 | DEBUG    | detector.image_processor       | Drew water line at y=20 with color=(0, 0, 255)
+2026-04-15 14:44:23 | DEBUG    | detector.image_processor       | Drew scale bar. fill up to 4.79m, danger zone above 4m
+2026-04-15 14:44:23 | INFO     | detector.image_processor       | Saved annotated image to: static/uploads\pexels-pixabay-219972.jpg
+2026-04-15 14:44:23 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:44:23] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:44:23 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:44:23] "GET /static/uploads/pexels-pixabay-219972.jpg?v=1776244463.1799643?t=1776244463194 HTTP/1.1" 200 -
+2026-04-15 14:44:41 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\pexels-pixabay-2438.jpg, original_size=(2048x1536)
+2026-04-15 14:44:41 | INFO     | detector.image_processor       | Resized to fit frame: scale=0.312, padded_to=(640x480)
+2026-04-15 14:44:41 | DEBUG    | detector.image_processor       | Drew water line at y=0 with color=(0, 0, 255)
+2026-04-15 14:44:41 | DEBUG    | detector.image_processor       | Drew scale bar. fill up to 5.00m, danger zone above 4m
+2026-04-15 14:44:41 | INFO     | detector.image_processor       | Saved annotated image to: static/uploads\pexels-pixabay-2438.jpg
+2026-04-15 14:44:41 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:44:41] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:44:41 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:44:41] "GET /static/uploads/pexels-pixabay-2438.jpg?v=1776244481.1299706?t=1776244481142 HTTP/1.1" 200 -
+2026-04-15 14:44:45 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\pexels-pixabay-2438.jpg, original_size=(2048x1536)
+2026-04-15 14:44:45 | INFO     | detector.image_processor       | Resized to fit frame: scale=0.312, padded_to=(640x480)
+2026-04-15 14:44:45 | DEBUG    | detector.image_processor       | Drew water line at y=0 with color=(0, 0, 255)
+2026-04-15 14:44:45 | DEBUG    | detector.image_processor       | Drew scale bar. fill up to 5.00m, danger zone above 4m
+2026-04-15 14:44:45 | INFO     | detector.image_processor       | Saved annotated image to: static/uploads\pexels-pixabay-2438.jpg
+2026-04-15 14:44:45 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:44:45] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:44:45 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:44:45] "GET /static/uploads/pexels-pixabay-2438.jpg?v=1776244485.8830724?t=1776244485893 HTTP/1.1" 200 -
+2026-04-15 14:47:29 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\detector\\water_level_detector.py', reloading
+2026-04-15 14:47:29 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 14:47:30 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 14:47:30 | ERROR    | detector.water_level_detector  | Model files missing! Detection will fail.
+2026-04-15 14:47:30 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 14:47:30 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-15 14:47:30 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-15 14:47:55 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 14:47:55 | ERROR    | detector.water_level_detector  | Model files missing! Detection will fail.
+2026-04-15 14:47:55 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 14:47:55 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-15 14:47:55 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-15 14:47:55 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 14:47:56 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 14:47:56 | ERROR    | detector.water_level_detector  | Model files missing! Detection will fail.
+2026-04-15 14:47:56 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 14:47:56 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-15 14:47:56 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-15 14:47:59 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:47:59] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-15 14:47:59 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:47:59] "GET /detect HTTP/1.1" 200 -
+2026-04-15 14:48:10 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\pexels-pixabay-2438.jpg, original_size=(2048x1536)
+2026-04-15 14:48:10 | INFO     | detector.image_processor       | Resized to fit frame: scale=0.312, padded_to=(640x480)
+2026-04-15 14:48:10 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:48:10] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:48:16 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\pexels-pixabay-2438.jpg, original_size=(2048x1536)
+2026-04-15 14:48:16 | INFO     | detector.image_processor       | Resized to fit frame: scale=0.312, padded_to=(640x480)
+2026-04-15 14:48:16 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:48:16] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:48:30 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\pexels-pixabay-219972.jpg, original_size=(2400x1650)
+2026-04-15 14:48:30 | INFO     | detector.image_processor       | Resized to fit frame: scale=0.267, padded_to=(640x480)
+2026-04-15 14:48:30 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:48:30] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:48:41 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:48:41 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:48:41 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:48:41] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:51:57 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\detector\\water_level_detector.py', reloading
+2026-04-15 14:51:57 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 14:51:57 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\detector\\water_level_detector.py', reloading
+2026-04-15 14:51:57 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 14:52:35 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 14:52:35 | WARNING  | detector.water_level_detector  | Model files missing! Detection will use full-frame fallback.
+2026-04-15 14:52:35 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 14:52:35 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-15 14:52:35 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-15 14:52:35 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 14:52:36 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 14:52:36 | WARNING  | detector.water_level_detector  | Model files missing! Detection will use full-frame fallback.
+2026-04-15 14:52:36 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 14:52:36 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-15 14:52:36 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-15 14:52:40 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:52:40] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-15 14:52:40 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:52:40] "GET /detect HTTP/1.1" 200 -
+2026-04-15 14:52:52 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:52:52 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:52:52 | DEBUG    | detector.image_processor       | Drew water line at y=48 with color=(0, 0, 255)
+2026-04-15 14:52:52 | DEBUG    | detector.image_processor       | Drew scale bar. fill up to 4.50m, danger zone above 4m
+2026-04-15 14:52:52 | INFO     | detector.image_processor       | Saved annotated image to: static/uploads\OIP (1).jpeg
+2026-04-15 14:52:52 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:52:52] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:52:52 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:52:52] "GET /static/uploads/OIP%20(1).jpeg?v=1776244972.2535005?t=1776244972266 HTTP/1.1" 200 -
+2026-04-15 14:56:29 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\detector\\water_level_detector.py', reloading
+2026-04-15 14:56:30 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 14:56:30 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 14:56:30 | ERROR    | detector.water_level_detector  | Model files missing! Please add them to /models folder.
+2026-04-15 14:56:30 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 14:56:30 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-15 14:56:30 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-15 14:56:47 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 14:56:47 | ERROR    | detector.water_level_detector  | Model files missing! Please add them to /models folder.
+2026-04-15 14:56:47 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 14:56:47 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-15 14:56:47 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-15 14:56:47 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 14:56:47 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 14:56:47 | ERROR    | detector.water_level_detector  | Model files missing! Please add them to /models folder.
+2026-04-15 14:56:47 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 14:56:47 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-15 14:56:47 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-15 14:56:49 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:56:49] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-15 14:56:49 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:56:49] "GET /detect HTTP/1.1" 200 -
+2026-04-15 14:56:58 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:56:58 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:56:58 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:56:58] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:56:59 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:56:59 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:56:59 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:56:59] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:56:59 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:56:59 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:56:59 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:56:59] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:56:59 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:56:59 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:56:59 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:56:59] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:56:59 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:56:59 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:56:59 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:56:59] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:57:00 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:57:00 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:57:00 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:57:00] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:57:00 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:57:00 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:57:00 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:57:00] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:57:00 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:57:00 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:57:00 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:57:00] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:57:00 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:57:00 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:57:00 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:57:00] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:57:01 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:57:01 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:57:01 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:57:01] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:57:01 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:57:01 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:57:01 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:57:01] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:57:01 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:57:01 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:57:01 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:57:01] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:57:17 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:57:17 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:57:17 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:57:17] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:58:12 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:58:12 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:58:12 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:58:12] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:58:23 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:58:23 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:58:23 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:58:23] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:58:30 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:58:30 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:58:30 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:58:30] "POST /detect HTTP/1.1" 200 -
+2026-04-15 14:58:31 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 14:58:31 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 14:58:31 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 14:58:31] "POST /detect HTTP/1.1" 200 -
+2026-04-15 15:09:53 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 15:09:53 | ERROR    | detector.water_level_detector  | Model files missing! Please add them to /models folder.
+2026-04-15 15:09:53 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 15:09:53 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-15 15:09:53 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-15 15:09:53 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-15 15:09:54 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-15 15:09:54 | ERROR    | detector.water_level_detector  | Model files missing! Please add them to /models folder.
+2026-04-15 15:09:54 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-15 15:09:54 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-15 15:09:54 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-15 15:09:57 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 15:09:57] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-15 15:09:57 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 15:09:57] "GET /detect HTTP/1.1" 200 -
+2026-04-15 15:10:06 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 15:10:06 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 15:10:06 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 15:10:06] "POST /detect HTTP/1.1" 200 -
+2026-04-15 15:10:13 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 15:10:13 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 15:10:13 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 15:10:13] "POST /detect HTTP/1.1" 200 -
+2026-04-15 15:10:25 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 15:10:25 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 15:10:25 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 15:10:25] "POST /detect HTTP/1.1" 200 -
+2026-04-15 15:10:36 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 15:10:36 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 15:10:36 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 15:10:36] "POST /detect HTTP/1.1" 200 -
+2026-04-15 15:10:37 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 15:10:37 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 15:10:37 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 15:10:37] "POST /detect HTTP/1.1" 200 -
+2026-04-15 15:10:48 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 15:10:48 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 15:10:48 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 15:10:48] "POST /detect HTTP/1.1" 200 -
+2026-04-15 15:10:57 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 15:10:57 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 15:10:57 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 15:10:57] "POST /detect HTTP/1.1" 200 -
+2026-04-15 15:11:03 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 15:11:03 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 15:11:03 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 15:11:03] "POST /detect HTTP/1.1" 200 -
+2026-04-15 15:11:16 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 15:11:16 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 15:11:16 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 15:11:16] "POST /detect HTTP/1.1" 200 -
+2026-04-15 15:11:19 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-15 15:11:19 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-15 15:11:19 | INFO     | werkzeug                       | 127.0.0.1 - - [15/Apr/2026 15:11:19] "POST /detect HTTP/1.1" 200 -
+2026-04-16 10:10:27 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:10:27 | INFO     | detector.water_level_detector  | Object Detection Model Loaded.
+2026-04-16 10:10:27 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:10:28 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-16 10:10:28 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-16 10:10:28 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:10:28 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:10:28 | INFO     | detector.water_level_detector  | Object Detection Model Loaded.
+2026-04-16 10:10:28 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:10:28 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-16 10:10:28 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-16 10:10:31 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:10:31] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-16 10:10:31 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:10:31] "GET /detect HTTP/1.1" 200 -
+2026-04-16 10:10:33 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:10:33] "[32mGET /logout HTTP/1.1[0m" 302 -
+2026-04-16 10:10:33 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:10:33] "GET / HTTP/1.1" 200 -
+2026-04-16 10:10:39 | INFO     | auth.user_model                | Login successful | username=Rishika
+2026-04-16 10:10:39 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:10:39] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-04-16 10:10:39 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:10:39] "GET /detect HTTP/1.1" 200 -
+2026-04-16 10:11:51 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\app.py', reloading
+2026-04-16 10:11:51 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\app.py', reloading
+2026-04-16 10:11:51 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:11:51 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:11:52 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\app.py', reloading
+2026-04-16 10:11:52 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:12:49 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:12:49 | INFO     | detector.water_level_detector  | Object Detection Model Loaded.
+2026-04-16 10:12:49 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:12:49 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-16 10:12:49 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-16 10:12:49 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:12:49 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:12:49 | INFO     | detector.water_level_detector  | Object Detection Model Loaded.
+2026-04-16 10:12:49 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:12:49 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-16 10:12:49 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-16 10:13:12 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:13:12 | INFO     | detector.water_level_detector  | Object Detection Model Loaded.
+2026-04-16 10:13:12 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:13:12 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-16 10:13:12 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-16 10:13:12 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:13:12 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:13:12 | INFO     | detector.water_level_detector  | Object Detection Model Loaded.
+2026-04-16 10:13:12 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:13:12 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-16 10:13:12 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-16 10:13:14 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:13:14] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-16 10:13:14 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:13:14] "GET /detect HTTP/1.1" 200 -
+2026-04-16 10:13:17 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:13:17] "[32mGET /logout HTTP/1.1[0m" 302 -
+2026-04-16 10:13:17 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:13:17] "GET / HTTP/1.1" 200 -
+2026-04-16 10:13:23 | INFO     | auth.user_model                | Login successful | username=Rishika
+2026-04-16 10:13:23 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:13:23] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-04-16 10:13:23 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:13:23] "GET /detect HTTP/1.1" 200 -
+2026-04-16 10:13:31 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-16 10:13:31 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-16 10:13:31 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:13:31] "POST /detect HTTP/1.1" 200 -
+2026-04-16 10:13:36 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-16 10:13:36 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-16 10:13:36 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:13:36] "POST /detect HTTP/1.1" 200 -
+2026-04-16 10:13:56 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\image.jpg, original_size=(320x180)
+2026-04-16 10:13:56 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.000, padded_to=(640x480)
+2026-04-16 10:13:56 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:13:56] "POST /detect HTTP/1.1" 200 -
+2026-04-16 10:14:01 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\image.jpg, original_size=(320x180)
+2026-04-16 10:14:01 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.000, padded_to=(640x480)
+2026-04-16 10:14:01 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:14:01] "POST /detect HTTP/1.1" 200 -
+2026-04-16 10:14:01 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\image.jpg, original_size=(320x180)
+2026-04-16 10:14:01 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.000, padded_to=(640x480)
+2026-04-16 10:14:01 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:14:01] "POST /detect HTTP/1.1" 200 -
+2026-04-16 10:17:11 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\detector\\water_level_detector.py', reloading
+2026-04-16 10:17:11 | INFO     | werkzeug                       |  * Detected change in 'c:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\detector\\water_level_detector.py', reloading
+2026-04-16 10:17:11 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:17:11 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:19:01 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:19:01 | INFO     | detector.water_level_detector  | Object Detection Model Loaded.
+2026-04-16 10:19:01 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:19:01 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-16 10:19:01 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-16 10:19:01 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:19:02 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:19:02 | INFO     | detector.water_level_detector  | Object Detection Model Loaded.
+2026-04-16 10:19:02 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:19:02 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-16 10:19:02 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-16 10:19:06 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:19:06] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-16 10:19:06 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:19:06] "GET /detect HTTP/1.1" 200 -
+2026-04-16 10:19:09 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:19:09] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-16 10:19:10 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:19:10] "GET /detect HTTP/1.1" 200 -
+2026-04-16 10:19:20 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-16 10:19:20 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-16 10:19:20 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:19:20] "POST /detect HTTP/1.1" 200 -
+2026-04-16 10:19:34 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (1).jpeg, original_size=(301x180)
+2026-04-16 10:19:34 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.126, padded_to=(640x480)
+2026-04-16 10:19:34 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:19:34] "POST /detect HTTP/1.1" 200 -
+2026-04-16 10:22:30 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\detector\\water_level_detector.py', reloading
+2026-04-16 10:22:30 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:23:07 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:23:07 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:23:07 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-16 10:23:07 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-16 10:23:08 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:23:08 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:23:08 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:23:08 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-16 10:23:08 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-16 10:23:10 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:23:10] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-16 10:23:10 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:23:10] "GET /detect HTTP/1.1" 200 -
+2026-04-16 10:23:19 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\image.jpg, original_size=(320x180)
+2026-04-16 10:23:19 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.000, padded_to=(640x480)
+2026-04-16 10:23:19 | INFO     | detector.water_level_detector  | Starting detection | shape=(480, 640, 3)
+2026-04-16 10:23:19 | DEBUG    | detector.water_level_detector  | Validator | std=61.4 | edge_density=0.076
+2026-04-16 10:23:19 | DEBUG    | detector.water_level_detector  | Sky removed | cutoff_y=144 (top 30%)
+2026-04-16 10:23:19 | DEBUG    | detector.water_level_detector  | ColorDetector | surface at y=144
+2026-04-16 10:23:19 | INFO     | detector.water_level_detector  | ColorDetector voted y=144
+2026-04-16 10:23:19 | DEBUG    | detector.water_level_detector  | GreyDetector | grey+smooth pixels=8588
+2026-04-16 10:23:19 | DEBUG    | detector.water_level_detector  | GreyDetector | surface at y=148
+2026-04-16 10:23:19 | INFO     | detector.water_level_detector  | GreyDetector voted y=148
+2026-04-16 10:23:19 | DEBUG    | detector.water_level_detector  | TextureDetector | surface at y=176
+2026-04-16 10:23:19 | INFO     | detector.water_level_detector  | TextureDetector voted y=176
+2026-04-16 10:23:19 | DEBUG    | detector.water_level_detector  | Candidates agree | averaged=146
+2026-04-16 10:23:19 | INFO     | detector.water_level_detector  | Final water_y=146 (from 3 strategies)
+2026-04-16 10:23:19 | INFO     | detector.water_level_detector  | Result | level=3.48m (69.6%) | status=WARNING
+2026-04-16 10:23:19 | DEBUG    | detector.image_processor       | Drew water line at y=146 with color=(0, 165, 255)
+2026-04-16 10:23:19 | DEBUG    | detector.image_processor       | Drew scale bar. fill up to 3.48m, danger zone above 4m
+2026-04-16 10:23:19 | INFO     | detector.image_processor       | Saved annotated image to: static/uploads\image.jpg
+2026-04-16 10:23:19 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:23:19] "POST /detect HTTP/1.1" 200 -
+2026-04-16 10:23:19 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:23:19] "GET /static/uploads/image.jpg?v=1776315199.3361535?t=1776315199347 HTTP/1.1" 200 -
+2026-04-16 10:27:12 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\detector\\water_level_detector.py', reloading
+2026-04-16 10:27:13 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:27:13 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:27:13 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:27:13 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-16 10:27:13 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-16 10:27:30 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:27:30 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:27:30 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-16 10:27:30 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-16 10:27:30 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:27:31 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:27:31 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:27:31 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-16 10:27:31 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-16 10:27:33 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:27:33] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-16 10:27:33 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:27:33] "GET /detect HTTP/1.1" 200 -
+2026-04-16 10:27:41 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\image.jpg, original_size=(320x180)
+2026-04-16 10:27:41 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.000, padded_to=(640x480)
+2026-04-16 10:27:41 | INFO     | detector.water_level_detector  | Detection start | shape=(480, 640, 3)
+2026-04-16 10:27:41 | DEBUG    | detector.water_level_detector  | Validator | std=61.4 | edge_density=0.076
+2026-04-16 10:27:41 | DEBUG    | detector.water_level_detector  | Sky removed | cutoff_y=144
+2026-04-16 10:27:41 | DEBUG    | detector.water_level_detector  | MaskBuilder | A(blue-green) pixels=57456
+2026-04-16 10:27:41 | DEBUG    | detector.water_level_detector  | MaskBuilder | B(grey) pixels=45540
+2026-04-16 10:27:41 | DEBUG    | detector.water_level_detector  | MaskBuilder | C(dark) pixels=134212
+2026-04-16 10:27:41 | DEBUG    | detector.water_level_detector  | MaskBuilder | final combined pixels=205156
+2026-04-16 10:27:41 | DEBUG    | detector.water_level_detector  | BottomUpFinder | gap exceeded at y=268, stopping
+2026-04-16 10:27:41 | DEBUG    | detector.water_level_detector  | BottomUpFinder | surface_y=284
+2026-04-16 10:27:41 | INFO     | detector.water_level_detector  | Result | water_y=284 | level=2.04m (40.8%) | status=SAFE
+2026-04-16 10:27:41 | DEBUG    | detector.image_processor       | Drew water line at y=284 with color=(34, 197, 94)
+2026-04-16 10:27:41 | DEBUG    | detector.image_processor       | Drew scale bar. fill up to 2.04m, danger zone above 4m
+2026-04-16 10:27:41 | INFO     | detector.image_processor       | Saved annotated image to: static/uploads\image.jpg
+2026-04-16 10:27:41 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:27:41] "POST /detect HTTP/1.1" 200 -
+2026-04-16 10:27:41 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:27:41] "GET /static/uploads/image.jpg?v=1776315461.8199754?t=1776315461825 HTTP/1.1" 200 -
+2026-04-16 10:28:00 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (3).jpeg, original_size=(151x180)
+2026-04-16 10:28:00 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.667, padded_to=(640x480)
+2026-04-16 10:28:00 | INFO     | detector.water_level_detector  | Detection start | shape=(480, 640, 3)
+2026-04-16 10:28:00 | DEBUG    | detector.water_level_detector  | Validator | std=109.1 | edge_density=0.032
+2026-04-16 10:28:00 | DEBUG    | detector.water_level_detector  | Sky removed | cutoff_y=144
+2026-04-16 10:28:00 | DEBUG    | detector.water_level_detector  | MaskBuilder | A(blue-green) pixels=96728
+2026-04-16 10:28:00 | DEBUG    | detector.water_level_detector  | MaskBuilder | B(grey) pixels=11261
+2026-04-16 10:28:00 | DEBUG    | detector.water_level_detector  | MaskBuilder | C(dark) pixels=172175
+2026-04-16 10:28:00 | DEBUG    | detector.water_level_detector  | MaskBuilder | final combined pixels=273671
+2026-04-16 10:28:00 | DEBUG    | detector.water_level_detector  | BottomUpFinder | surface_y=145
+2026-04-16 10:28:00 | INFO     | detector.water_level_detector  | Result | water_y=145 | level=3.49m (69.8%) | status=WARNING
+2026-04-16 10:28:00 | DEBUG    | detector.image_processor       | Drew water line at y=145 with color=(0, 165, 255)
+2026-04-16 10:28:00 | DEBUG    | detector.image_processor       | Drew scale bar. fill up to 3.49m, danger zone above 4m
+2026-04-16 10:28:00 | INFO     | detector.image_processor       | Saved annotated image to: static/uploads\OIP (3).jpeg
+2026-04-16 10:28:00 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:28:00] "POST /detect HTTP/1.1" 200 -
+2026-04-16 10:28:01 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:28:01] "GET /static/uploads/OIP%20(3).jpeg?v=1776315480.9819489?t=1776315480991 HTTP/1.1" 200 -
+2026-04-16 10:34:40 | INFO     | werkzeug                       |  * Detected change in 'C:\\Users\\RISHIKA DASHORE\\OneDrive\\Documents\\project  folder\\detector\\water_level_detector.py', reloading
+2026-04-16 10:34:40 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:35:38 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:35:39 | INFO     | detector.water_level_detector  | ObjectValidator | MobileNet SSD loaded
+2026-04-16 10:35:39 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:35:39 | INFO     | werkzeug                       | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-04-16 10:35:39 | INFO     | werkzeug                       | [33mPress CTRL+C to quit[0m
+2026-04-16 10:35:39 | INFO     | werkzeug                       |  * Restarting with stat
+2026-04-16 10:35:39 | INFO     | logger_config                  | Logging initialised | level=DEBUG | file=logs\app.log
+2026-04-16 10:35:39 | INFO     | detector.water_level_detector  | ObjectValidator | MobileNet SSD loaded
+2026-04-16 10:35:39 | INFO     | auth.user_model                | Database ready | postgres=False
+2026-04-16 10:35:39 | WARNING  | werkzeug                       |  * Debugger is active!
+2026-04-16 10:35:39 | INFO     | werkzeug                       |  * Debugger PIN: 102-123-222
+2026-04-16 10:35:50 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:35:50] "[32mGET / HTTP/1.1[0m" 302 -
+2026-04-16 10:35:50 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:35:50] "GET /detect HTTP/1.1" 200 -
+2026-04-16 10:35:58 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\image.jpg, original_size=(320x180)
+2026-04-16 10:35:58 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.000, padded_to=(640x480)
+2026-04-16 10:35:58 | INFO     | detector.water_level_detector  | Detection start | shape=(480, 640, 3)
+2026-04-16 10:35:58 | DEBUG    | detector.water_level_detector  | SkyRemover | cutoff_y=144
+2026-04-16 10:35:58 | DEBUG    | detector.water_level_detector  | WaterMaskBuilder | water px=205156
+2026-04-16 10:35:58 | DEBUG    | detector.water_level_detector  | BottomUpFinder | gap exceeded at y=268
+2026-04-16 10:35:58 | DEBUG    | detector.water_level_detector  | BottomUpFinder | surface_y=284
+2026-04-16 10:35:58 | INFO     | detector.water_level_detector  | Result | water_y=284 | level=2.04m (40.8%) | status=SAFE
+2026-04-16 10:35:58 | DEBUG    | detector.image_processor       | Drew water line at y=284 with color=(34, 197, 94)
+2026-04-16 10:35:58 | DEBUG    | detector.image_processor       | Drew scale bar. fill up to 2.04m, danger zone above 4m
+2026-04-16 10:35:58 | INFO     | detector.image_processor       | Saved annotated image to: static/uploads\image.jpg
+2026-04-16 10:35:58 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:35:58] "POST /detect HTTP/1.1" 200 -
+2026-04-16 10:35:59 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:35:59] "GET /static/uploads/image.jpg?v=1776315958.7233386?t=1776315958735 HTTP/1.1" 200 -
+2026-04-16 10:36:15 | INFO     | detector.image_processor       | Loaded image: path=static/uploads\OIP (3).jpeg, original_size=(151x180)
+2026-04-16 10:36:15 | INFO     | detector.image_processor       | Resized to fit frame: scale=2.667, padded_to=(640x480)
+2026-04-16 10:36:15 | INFO     | detector.water_level_detector  | Detection start | shape=(480, 640, 3)
+2026-04-16 10:36:15 | DEBUG    | detector.water_level_detector  | ObjectValidator | detected=tvmonitor conf=0.97
+2026-04-16 10:36:15 | WARNING  | detector.water_level_detector  | ObjectValidator | rejected=tvmonitor conf=0.97
+2026-04-16 10:36:15 | INFO     | werkzeug                       | 127.0.0.1 - - [16/Apr/2026 10:36:15] "POST /detect HTTP/1.1" 200 -
