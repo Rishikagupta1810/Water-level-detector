@@ -1,12 +1,19 @@
 """
-River Water Level Detector — rewritten for real river images.
+WaterLevelDetector v6
 
-Strategy:
-  - Detects the WATER-LAND BOUNDARY (waterline) using color segmentation
-  - Waterline position in the image determines the level
-  - Higher waterline (closer to top) = higher flood risk = DANGER
-  - Lower waterline (closer to bottom) = normal = SAFE
-  - Calibration: image height maps to TOTAL_HEIGHT_METERS (default 5m)
+Key fix: Object detection pre-check using MobileNet SSD.
+  - If the image contains a book, laptop, phone, person, etc. → reject immediately
+  - Only proceed to water detection if no non-water objects are detected
+    with high confidence, OR if a container-like object (bottle, bowl) is found
+
+Pipeline:
+  Step 1 — Object detection pre-check (reject books, screens, people, etc.)
+  Step 2 — Validate (reject blank/uniform images)
+  Step 3 — Isolate container ROI if detected
+  Step 4 — Remove sky
+  Step 5 — Build water mask
+  Step 6 — Find surface bottom-up
+  Step 7 — Calculate level
 """
 
 import cv2
@@ -16,168 +23,320 @@ import os
 
 logger = logging.getLogger(__name__)
 
-TOTAL_HEIGHT_METERS = 5.0
 
+# ─────────────────────────────────────────────
+#  Object Validator — rejects non-water images
+# ─────────────────────────────────────────────
 
-class ImageValidator:
-    def is_likely_water_image(self, image: np.ndarray):
-        if image is None or image.size == 0:
-            return False, "Image is empty or unreadable."
-        h, w = image.shape[:2]
-        if h < 40 or w < 40:
-            return False, "Image is too small to analyse."
-        return True, None
+class ObjectValidator:
+    # Objects that clearly mean this is NOT a water image
+    REJECT_CLASSES = {
+        "book", "tvmonitor", "laptop", "person", "car", "bus",
+        "motorbike", "bicycle", "aeroplane", "train", "cat",
+        "dog", "horse", "sheep", "cow", "bird", "sofa",
+        "chair", "diningtable", "pottedplant"
+    }
 
+    # Objects that confirm a water container — always allow
+    CONTAINER_CLASSES = {"bottle", "bowl", "boat"}
 
-class RiverWaterlineDetector:
-    """
-    Detects the TOP edge of the water body in a river image.
-
-    Key insight for rivers:
-      - Water occupies the LOWER portion of the image
-      - Land/banks/trees occupy the UPPER portion
-      - The waterline is the TOPMOST boundary of the water region
-      - If waterline is HIGH in image  → flooding → DANGER
-      - If waterline is LOW in image   → normal level → SAFE
-    """
-
-    # HSV ranges tuned for river/lake water
-    WATER_RANGES = [
-        # Blue river water (deep/clear)
-        (np.array([90,  25,  25]), np.array([130, 255, 255])),
-        # Teal/green-blue river water
-        (np.array([75,  20,  20]), np.array([100, 220, 220])),
-        # Grey/silver water (overcast sky reflection)
-        (np.array([0,    0,  80]), np.array([180,  30, 200])),
-        # Muddy brown river water
-        (np.array([8,   40,  40]), np.array([22,  200, 180])),
-        # Dark murky water
-        (np.array([85,  10,  10]), np.array([135,  80, 120])),
-    ]
-
-    def create_water_mask(self, image: np.ndarray) -> np.ndarray:
-        hsv  = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        mask = np.zeros(hsv.shape[:2], dtype=np.uint8)
-        for lo, hi in self.WATER_RANGES:
-            mask |= cv2.inRange(hsv, lo, hi)
-        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7))
-        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=3)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN,  kernel, iterations=2)
-        return mask
-
-    def find_waterline(self, image: np.ndarray) -> tuple:
-        """
-        Returns (waterline_y, water_mask, confidence).
-        waterline_y = topmost row index of water body.
-        """
-        h, w = image.shape[:2]
-        mask = self.create_water_mask(image)
-
-        water_coverage = np.count_nonzero(mask) / (h * w)
-        logger.info("Water pixel coverage: %.1f%%", water_coverage * 100)
-
-        if water_coverage < 0.03:
-            logger.warning("Very little water detected (%.1f%%)", water_coverage * 100)
-            return None, mask, 0.0
-
-        min_water_cols = max(10, int(w * 0.20))
-        waterline_y = None
-
-        # Find topmost row with continuous band of water pixels
-        for y in range(h):
-            if np.count_nonzero(mask[y]) >= min_water_cols:
-                waterline_y = y
-                break
-
-        if waterline_y is None:
-            row_sums = np.array([np.count_nonzero(mask[y]) for y in range(h)])
-            waterline_y = int(np.argmax(row_sums))
-
-        confidence = min(1.0, water_coverage * 3.0)
-        logger.info("Waterline at y=%d (%.1f%% from top), confidence=%.2f",
-                    waterline_y, (waterline_y / h) * 100, confidence)
-
-        return waterline_y, mask, confidence
-
-
-class ClarityAnalyser:
-    def analyse(self, image: np.ndarray) -> str:
-        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        mean_hue = float(np.mean(hsv[:, :, 0]))
-        mean_sat = float(np.mean(hsv[:, :, 1]))
-        mean_val = float(np.mean(hsv[:, :, 2]))
-
-        if 8 <= mean_hue <= 25 and mean_sat > 35:
-            return "muddy"
-        if mean_sat < 25 and mean_val > 160:
-            return "clear"
-        if 85 <= mean_hue <= 130:
-            return "clear"
-        if 60 <= mean_hue < 85:
-            return "murky"
-        return "clear"
-
-
-class WaterLevelDetector:
-    """
-    River water level detector.
-
-    Level logic:
-      waterline_y = top of water in image (row index from top)
-      level_fraction = (image_height - waterline_y) / image_height
-
-      waterline near TOP   → level_fraction ≈ 1.0 → DANGER (flooding)
-      waterline at middle  → level_fraction ≈ 0.5 → WARNING
-      waterline near BOTTOM → level_fraction ≈ 0.2 → SAFE (normal river)
-    """
-
-    LEVEL_THRESHOLDS = [
-        (0.75, (0, 0, 220),   "DANGER"),
-        (0.45, (0, 165, 255), "WARNING"),
-        (0.00, (34, 197, 94), "SAFE"),
+    CLASSES = [
+        "background", "aeroplane", "bicycle", "bird", "boat",
+        "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
+        "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
+        "sofa", "train", "tvmonitor"
     ]
 
     def __init__(self):
-        self.validator = ImageValidator()
-        self.detector  = RiverWaterlineDetector()
-        self.clarity   = ClarityAnalyser()
+        model_path  = "models/mobilenet_iter_73000.caffemodel"
+        config_path = "models/deploy.prototxt"
 
-    def _classify(self, level_fraction: float):
-        for threshold, color, label in self.LEVEL_THRESHOLDS:
-            if level_fraction >= threshold:
-                return label, color
-        return "SAFE", (34, 197, 94)
+        if os.path.exists(model_path) and os.path.exists(config_path):
+            self.net     = cv2.dnn.readNetFromCaffe(config_path, model_path)
+            self.enabled = True
+            logger.info("ObjectValidator | MobileNet SSD loaded")
+        else:
+            logger.warning("ObjectValidator | model not found, running in fallback mode")
+            self.enabled = False
+
+    def check(self, image: np.ndarray) -> tuple:
+        """
+        Returns (allowed: bool, reason: str)
+          allowed=True  → proceed with water detection
+          allowed=False → reject with user-friendly message
+        """
+        if not self.enabled:
+            return True, "OK"
+
+        (h, w) = image.shape[:2]
+        blob = cv2.dnn.blobFromImage(
+            cv2.resize(image, (300, 300)), 0.007843, (300, 300), 127.5
+        )
+        self.net.setInput(blob)
+        detections = self.net.forward()
+
+        found_container = False
+        rejected_label  = None
+        highest_conf    = 0.0
+
+        for i in range(detections.shape[2]):
+            confidence = float(detections[0, 0, i, 2])
+            if confidence < 0.45:
+                continue
+
+            idx   = int(detections[0, 0, i, 1])
+            label = self.CLASSES[idx] if idx < len(self.CLASSES) else "unknown"
+            logger.debug("ObjectValidator | detected=%s conf=%.2f", label, confidence)
+
+            if label in self.CONTAINER_CLASSES:
+                found_container = True
+
+            if label in self.REJECT_CLASSES and confidence > highest_conf:
+                highest_conf   = confidence
+                rejected_label = label
+
+        # Container detected → always allow
+        if found_container:
+            logger.info("ObjectValidator | container detected → allowed")
+            return True, "OK"
+
+        # Non-water object detected → reject
+        if rejected_label:
+            friendly = {
+                "book":        "a book or document",
+                "tvmonitor":   "a screen or monitor",
+                "laptop":      "a laptop or screen",
+                "person":      "a person",
+                "car":         "a vehicle",
+                "bus":         "a vehicle",
+                "motorbike":   "a vehicle",
+                "bicycle":     "a bicycle",
+                "chair":       "furniture",
+                "sofa":        "furniture",
+                "diningtable": "furniture",
+                "pottedplant": "a plant",
+                "cat":         "an animal",
+                "dog":         "an animal",
+                "bird":        "an animal",
+            }.get(rejected_label, f"a {rejected_label}")
+
+            msg = (
+                f"This image appears to contain {friendly}, not water. "
+                f"Please upload a photo of a water body, tank, river, or glass of water."
+            )
+            logger.warning("ObjectValidator | rejected=%s conf=%.2f", rejected_label, highest_conf)
+            return False, msg
+
+        return True, "OK"
+
+    def get_container_box(self, image: np.ndarray):
+        """Returns bounding box of the best detected container, or None."""
+        if not self.enabled:
+            return None
+
+        (h, w) = image.shape[:2]
+        blob = cv2.dnn.blobFromImage(
+            cv2.resize(image, (300, 300)), 0.007843, (300, 300), 127.5
+        )
+        self.net.setInput(blob)
+        detections = self.net.forward()
+
+        for i in range(detections.shape[2]):
+            confidence = float(detections[0, 0, i, 2])
+            if confidence < 0.35:
+                continue
+            idx   = int(detections[0, 0, i, 1])
+            label = self.CLASSES[idx] if idx < len(self.CLASSES) else "unknown"
+            if label in self.CONTAINER_CLASSES:
+                box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+                return box.astype("int")
+        return None
+
+
+# ─────────────────────────────────────────────
+#  Sky Remover
+# ─────────────────────────────────────────────
+
+class SkyRemover:
+    SKY_TRIM_RATIO = 0.30
+
+    def remove(self, image: np.ndarray):
+        h          = image.shape[0]
+        sky_cutoff = int(h * self.SKY_TRIM_RATIO)
+        trimmed    = image.copy()
+        trimmed[:sky_cutoff, :] = 0
+        logger.debug("SkyRemover | cutoff_y=%d", sky_cutoff)
+        return trimmed, sky_cutoff
+
+
+# ─────────────────────────────────────────────
+#  Image Validator (basic sanity only)
+# ─────────────────────────────────────────────
+
+class ImageValidator:
+    MIN_STD_DEV = 8.0
+
+    def is_likely_water_image(self, image: np.ndarray) -> tuple:
+        gray    = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        std_dev = float(np.std(gray))
+        if std_dev < self.MIN_STD_DEV:
+            return False, "Image is too uniform or blank. Please upload a real photo."
+        return True, "OK"
+
+
+# ─────────────────────────────────────────────
+#  Water Mask Builder
+# ─────────────────────────────────────────────
+
+class WaterMaskBuilder:
+    def build(self, image: np.ndarray) -> np.ndarray:
+        hsv              = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        h_ch, s_ch, v_ch = cv2.split(hsv)
+
+        # Strategy A: Blue-green water
+        mask_a = cv2.inRange(hsv, np.array([85, 35, 35]), np.array([135, 255, 255]))
+
+        # Strategy B: Grey/white water (glass of water, clear liquid)
+        mask_b = ((s_ch < 90) & (v_ch > 40) & (v_ch < 230)).astype(np.uint8) * 255
+
+        # Strategy C: Dark/deep water
+        mask_c = ((s_ch < 60) & (v_ch < 80)).astype(np.uint8) * 255
+
+        combined = cv2.bitwise_or(mask_a, mask_b)
+        combined = cv2.bitwise_or(combined, mask_c)
+
+        kernel   = np.ones((7, 7), np.uint8)
+        combined = cv2.morphologyEx(combined, cv2.MORPH_OPEN,  kernel)
+        combined = cv2.morphologyEx(combined, cv2.MORPH_CLOSE, kernel)
+
+        logger.debug("WaterMaskBuilder | water px=%d", np.count_nonzero(combined))
+        return combined
+
+
+# ─────────────────────────────────────────────
+#  Bottom-Up Surface Finder
+# ─────────────────────────────────────────────
+
+class BottomUpSurfaceFinder:
+    MIN_ROW_FILL = 0.10
+    MAX_GAP_ROWS = 15
+
+    def find_surface(self, mask: np.ndarray, sky_cutoff: int):
+        h, w   = mask.shape
+        min_px = int(w * self.MIN_ROW_FILL)
+
+        bottom_zone = mask[int(h * 0.6):, :]
+        if np.count_nonzero(bottom_zone) < (w * 0.05):
+            logger.warning("BottomUpFinder | no water in bottom 40%% of image")
+            return None
+
+        in_water  = False
+        gap_count = 0
+        surface_y = None
+
+        for y in range(h - 1, sky_cutoff, -1):
+            is_water_row = np.count_nonzero(mask[y, :]) >= min_px
+
+            if is_water_row:
+                in_water  = True
+                gap_count = 0
+                surface_y = y
+            elif in_water:
+                gap_count += 1
+                if gap_count > self.MAX_GAP_ROWS:
+                    logger.debug("BottomUpFinder | gap exceeded at y=%d", y)
+                    break
+
+        logger.debug("BottomUpFinder | surface_y=%s", surface_y)
+        return surface_y
+
+
+# ─────────────────────────────────────────────
+#  Main Detector
+# ─────────────────────────────────────────────
+
+class WaterLevelDetector:
+    TOTAL_HEIGHT_METERS = 5.0
+
+    LEVEL_THRESHOLDS = [
+        (0.80, (0, 0, 220),   "DANGER",  "red"),
+        (0.50, (0, 165, 255), "WARNING", "orange"),
+        (0.00, (34, 197, 94), "SAFE",    "green"),
+    ]
+
+    def __init__(self):
+        self.obj_validator  = ObjectValidator()
+        self.validator      = ImageValidator()
+        self.sky_remover    = SkyRemover()
+        self.mask_builder   = WaterMaskBuilder()
+        self.surface_finder = BottomUpSurfaceFinder()
 
     def detect(self, image: np.ndarray):
+        logger.info("Detection start | shape=%s", image.shape)
+
+        # Step 1 — Object detection pre-check
+        allowed, reason = self.obj_validator.check(image)
+        if not allowed:
+            return None, reason
+
+        # Step 2 — Basic sanity check
         is_valid, reason = self.validator.is_likely_water_image(image)
         if not is_valid:
-            return None
+            return None, reason
 
-        h = image.shape[0]
-        waterline_y, water_mask, confidence = self.detector.find_waterline(image)
+        # Step 3 — Isolate container ROI if detected
+        height        = image.shape[0]
+        container_box = self.obj_validator.get_container_box(image)
 
-        if waterline_y is None:
-            return None
+        if container_box is not None:
+            startX, startY, endX, endY = container_box
+            roi      = image[max(0, startY):min(height, endY),
+                             max(0, startX):min(image.shape[1], endX)]
+            offset_y = startY
+            logger.info("Container ROI | box=%s", container_box)
+        else:
+            roi      = image
+            offset_y = 0
 
-        level_fraction = (h - waterline_y) / h
-        level_fraction = max(0.0, min(1.0, level_fraction))
+        # Step 4 — Sky removal
+        preprocessed, sky_cutoff = self.sky_remover.remove(roi)
 
-        level_meters = round(level_fraction * TOTAL_HEIGHT_METERS, 2)
-        status, color_bgr = self._classify(level_fraction)
-        clarity = self.clarity.analyse(image)
+        # Step 5 — Water mask
+        water_mask = self.mask_builder.build(preprocessed)
+
+        # Step 6 — Surface detection (bottom-up)
+        water_y = self.surface_finder.find_surface(water_mask, sky_cutoff)
+
+        if water_y is None:
+            return None, (
+                "No water surface detected. Please upload a clear photo of a "
+                "water body, tank, river, or glass of water."
+            )
+
+        water_y += offset_y  # adjust for ROI crop
+
+        # Step 7 — Calculate level
+        level_percent = max(0.0, min(1.0, (height - water_y) / height))
+        level_meters  = round(level_percent * self.TOTAL_HEIGHT_METERS, 2)
+        status, color_bgr = self._classify_level(level_percent)
 
         logger.info(
-            "Result: waterline_y=%d, level=%.1f%%, %.2fm, status=%s, clarity=%s",
-            waterline_y, level_fraction * 100, level_meters, status, clarity
+            "Result | water_y=%d | level=%.2fm (%.1f%%) | status=%s",
+            water_y, level_meters, level_percent * 100, status
         )
 
         return {
-            "water_y":       int(waterline_y),
+            "water_y":       int(water_y),
             "level_meters":  level_meters,
-            "level_percent": round(level_fraction * 100, 1),
+            "level_percent": round(level_percent * 100, 1),
             "status":        status,
-            "clarity":       clarity,
             "color_bgr":     color_bgr,
-            "image_height":  h,
-            "confidence":    round(confidence * 100, 1),
-        }
+            "image_height":  height,
+            "sky_cutoff":    sky_cutoff,
+        }, None
+
+    def _classify_level(self, level_percent: float):
+        for threshold, color, label, _ in self.LEVEL_THRESHOLDS:
+            if level_percent >= threshold:
+                return label, color
+        return "SAFE", (34, 197, 94)
